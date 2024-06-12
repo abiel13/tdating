@@ -19,14 +19,7 @@ export default function Home() {
             Swipe Right &#174;{" "}
           </h1>
           <div className="flex items-center gap-4 flex-col md:flex-row mt-[1rem] ">
-            <Link
-              className={cn(
-                "bg-primary px-4 py-2 rounded-lg text-white text-xl font-bold"
-              )}
-              href={"/create-account"}
-            >
-              Create Account
-            </Link>
+        
      <TelegramLoginButton />
           </div>
         </div>
