@@ -1,4 +1,5 @@
 import FooterCarousel from "@/components/FooterCarousel";
+import TelegramLoginButton from "@/components/TelegramLoginButton";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
@@ -26,14 +27,7 @@ export default function Home() {
             >
               Create Account
             </Link>
-            <Link
-              className={cn(
-                "border-gray-300 border-[1px] min-w-[130px] text-center px-4 py-2 rounded-lg text-white text-xl font-bold"
-              )}
-              href={"/login"}
-            >
-              Login
-            </Link>
+     <TelegramLoginButton />
           </div>
         </div>
         <div className="min-h-[110vh] bg-[#111418] mt-[3rem] px-[1rem]">
