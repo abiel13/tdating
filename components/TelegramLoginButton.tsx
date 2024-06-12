@@ -19,6 +19,7 @@ const TelegramLoginButton = () => {
 
   // Define the callback function
   const onTelegramAuth = (user: any) => {
+    document.cookie = `tdating-user-data=${user}`;
     router.push("/onboarding");
   };
 

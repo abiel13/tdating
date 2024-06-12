@@ -1,4 +1,4 @@
-// global.d.ts
+
 interface Window {
     onTelegramAuth: (user: {
       id: number;

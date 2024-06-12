@@ -1,9 +1,7 @@
 import FooterCarousel from "@/components/FooterCarousel";
 import TelegramLoginButton from "@/components/TelegramLoginButton";
 import { Separator } from "@/components/ui/separator";
-import { cn } from "@/lib/utils";
 import Image from "next/image";
-import Link from "next/link";
 
 export default function Home() {
   return (
@@ -19,12 +17,10 @@ export default function Home() {
             Swipe Right &#174;{" "}
           </h1>
           <div className="flex items-center gap-4 flex-col md:flex-row mt-[1rem] ">
-        
-     <TelegramLoginButton />
+            <TelegramLoginButton />
           </div>
         </div>
         <div className="min-h-[110vh] bg-[#111418] mt-[3rem] px-[1rem]">
-       
           <div className="flex flex-col mt-[2rem] h-full">
             <div className="my-[2rem] w-full h-[40%] flex items-center justify-center">
               <FooterCarousel />
