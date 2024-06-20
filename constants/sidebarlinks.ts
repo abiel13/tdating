@@ -23,7 +23,7 @@ export const sidebarlinks = [
   },
   {
     label: "profile",
-    href: "/dashboard/user_profile",
+    href: "/dashboard/profile",
     Icon: User,
   },
 ];

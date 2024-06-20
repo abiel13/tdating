@@ -1,4 +1,6 @@
+import Bottombar from "@/components/Bottombar";
 import LeftSidebar from "@/components/LeftSidebar";
+import Topbar from "@/components/Topbar";
 
 export default function DashboardLayout({
   children,
@@ -6,13 +8,14 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body>
-        <main className={`bg-black h-screen`}>
-          <LeftSidebar />
-          <section>{children}</section>
-        </main>
-      </body>
-    </html>
+    <main className={`bg-black h-screen flex md:flex-row flex-col`}>
+      <LeftSidebar />
+      <section className="w-full h-full">
+        <Topbar />
+        {children}
+      </section>
+
+      <Bottombar />
+    </main>
   );
 }
