@@ -1,4 +1,4 @@
-
+import LeftSidebar from "@/components/LeftSidebar";
 
 export default function DashboardLayout({
   children,
@@ -7,7 +7,12 @@ export default function DashboardLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={``}>{children}</body>
+      <body>
+        <main className={`bg-black h-screen`}>
+          <LeftSidebar />
+          <section>{children}</section>
+        </main>
+      </body>
     </html>
   );
 }

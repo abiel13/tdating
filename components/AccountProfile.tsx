@@ -14,31 +14,23 @@ import {
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { userValidation } from "@/lib/validations/user";
+import { onboardingValidation } from "@/lib/validations/onboarding";
 import * as z from "zod";
 import Image from "next/image";
-import { Textarea } from "../ui/textarea";
+import { Textarea } from "@/components/ui/textarea";
 import { isBase64Image } from "@/lib/utils/utils";
 import { useUploadThing } from "@/lib/uploadthing";
 
 interface AccountProfileProps {
-  user: {
-    id: string;
-    objectId: string;
-    userName: string;
-    name: string;
-    bio: string;
-    image: string;
-  };
   btnTitle: string;
 }
 
-const AccountProfile = ({ user, btnTitle }: AccountProfileProps) => {
+const AccountProfile = ({ btnTitle }: AccountProfileProps) => {
   const [Files, setFiles] = useState<File[]>([]);
 
   const { startUpload } = useUploadThing("media");
 
-  async function onSubmit(values: z.infer<typeof userValidation>) {
+  async function onSubmit(values: z.infer<typeof onboardingValidation>) {
     const blob = values.profile_photo;
 
     const hasImageChanged = isBase64Image(blob);
@@ -74,12 +66,12 @@ const AccountProfile = ({ user, btnTitle }: AccountProfileProps) => {
   };
 
   const form = useForm({
-    resolver: zodResolver(userValidation),
+    resolver: zodResolver(onboardingValidation),
     defaultValues: {
-      profile_photo: user?.image || " ",
-      name: user?.name || "",
-      bio: user?.bio || "",
-      username: user?.userName || "",
+      profile_photo: "",
+      name: "",
+      bio: "",
+      username: "",
     },
   });
 
@@ -94,8 +86,8 @@ const AccountProfile = ({ user, btnTitle }: AccountProfileProps) => {
           name="profile_photo"
           render={({ field }) => (
             <FormItem className="  flex items-center gap-4">
-              <FormLabel className="account-form_image-label">
-                {field.value ? (
+              <FormLabel className=" flex h-24 w-24 items-center justify-center rounded-full bg-black/10">
+                {field.value.length ? (
                   <Image
                     src={field.value}
                     alt="profile photo"
@@ -131,11 +123,11 @@ const AccountProfile = ({ user, btnTitle }: AccountProfileProps) => {
           name="name"
           render={({ field }) => (
             <FormItem className="w-full flex-col  flex justify-start   gap-4">
-              <FormLabel className="text-light-2 text-base-semibold">
+              <FormLabel className="!text-white text-base-semibold text-xl font-sans">
                 Name
               </FormLabel>
               <FormControl className="flex-1 text-base-semibold text-gray-200">
-                <Input type="text" className="account-form_input" {...field} />
+                <Input type="text" className="py-4 rounded-md px-3 text-gray-100" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -145,12 +137,12 @@ const AccountProfile = ({ user, btnTitle }: AccountProfileProps) => {
           control={form.control}
           name="username"
           render={({ field }) => (
-            <FormItem className="w-full flex-col  flex justify-start   gap-4">
-              <FormLabel className="text-light-2 text-base-semibold">
+            <FormItem className="w-full flex-col  flex justify-start   gap-4 ">
+              <FormLabel className="text-white font-bold text-xl font-sans">
                 Username
               </FormLabel>
               <FormControl className="flex-1 text-base-semibold text-gray-200">
-                <Input type="text" className="account-form_input" {...field} />
+                <Input type="text" className="py-4 rounded-md px-3 text-gray-100" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -161,17 +153,17 @@ const AccountProfile = ({ user, btnTitle }: AccountProfileProps) => {
           name="bio"
           render={({ field }) => (
             <FormItem className="w-full flex-col  flex justify-start   gap-4">
-              <FormLabel className="text-light-2 text-base-semibold">
+              <FormLabel className="text-white font-bold text-xl font-sans">
                 Bio
               </FormLabel>
               <FormControl className="flex-1 text-base-semibold text-gray-200">
-                <Textarea rows={10} className="account-form_input" {...field} />
+                <Textarea rows={10} className="py-4 rounded-md px-3 text-gray-100" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-        <Button type="submit" className="bg-primary-500">
+        <Button  className="!bg-primary-500 font-semibold text-xl font-sans">
           Submit
         </Button>
       </form>

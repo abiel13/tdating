@@ -1,9 +1,6 @@
-"use client";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import Image from "next/image";
-import Script from "next/script";
-import { useEffect } from "react";
+import TelegramContainer from "@/components/TelegramContainer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,17 +14,10 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  useEffect(() => {
-    const script = document.createElement("script");
-    script.src = "https://telegram.org/js/telegram-web-app.js";
-    script.async = true;
-    document.getElementById("telegram-container")!.appendChild(script);
-  }, []);
-
   return (
     <html lang="en">
       <body className={`  ${inter.className}`}>
-        <main id="telegram-container">{children}</main>
+        <TelegramContainer>{children}</TelegramContainer>
       </body>
     </html>
   );
