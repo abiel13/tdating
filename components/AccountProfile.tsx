@@ -1,11 +1,10 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -18,10 +17,11 @@ import { onboardingValidation } from "@/lib/validations/onboarding";
 import * as z from "zod";
 import Image from "next/image";
 import { Textarea } from "@/components/ui/textarea";
-import { isBase64Image } from "@/lib/utils/utils";
+import { getLocation, isBase64Image } from "@/lib/utils/utils";
 import { useUploadThing } from "@/lib/uploadthing";
 import { useRouter } from "next/navigation";
 import { hobbies } from "@/constants/hobbies";
+import { getGeoLocation } from "@/lib/location";
 
 interface AccountProfileProps {
   btnTitle: string;
@@ -31,7 +31,7 @@ const AccountProfile = ({ btnTitle }: AccountProfileProps) => {
   const [Files, setFiles] = useState<File[]>([]);
   const router = useRouter();
   const [hobby, setHobby] = useState<String[]>([]);
-
+  const [location, setLocation] = useState<string | null>("");
   const { startUpload } = useUploadThing("media");
 
   async function onSubmit(values: z.infer<typeof onboardingValidation>) {
@@ -79,6 +79,25 @@ const AccountProfile = ({ btnTitle }: AccountProfileProps) => {
       username: "",
     },
   });
+
+  useEffect(() => {
+    (async function () {
+      try {
+        const location = await getLocation();
+        console.log(location);
+        // Use the location object as needed
+        const getGeo = await getGeoLocation(
+          location?.latitude,
+          location.longitude
+        );
+        
+        setLocation(getGeo);
+      } catch (error) {
+        console.error("Error getting location:", error);
+        // Handle the error message appropriately, e.g., display it to the user
+      }
+    })();
+  }, []);
 
   return (
     <Form {...form}>
@@ -180,7 +199,12 @@ const AccountProfile = ({ btnTitle }: AccountProfileProps) => {
             </FormItem>
           )}
         />
-
+        <div>
+          <h1 className="font-bold text-white font-sans text-3xl">
+            Location:{" "}
+          </h1>
+          <p className="text-white font-bold text-xl">{location}</p>
+        </div>
         <div>
           <h1 className="text-white font-bold font-sans text-2xl">
             Select Hobbies
