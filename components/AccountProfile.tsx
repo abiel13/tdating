@@ -20,6 +20,8 @@ import Image from "next/image";
 import { Textarea } from "@/components/ui/textarea";
 import { isBase64Image } from "@/lib/utils/utils";
 import { useUploadThing } from "@/lib/uploadthing";
+import { useRouter } from "next/navigation";
+import { hobbies } from "@/constants/hobbies";
 
 interface AccountProfileProps {
   btnTitle: string;
@@ -27,21 +29,24 @@ interface AccountProfileProps {
 
 const AccountProfile = ({ btnTitle }: AccountProfileProps) => {
   const [Files, setFiles] = useState<File[]>([]);
+  const router = useRouter();
+  const [hobby, setHobby] = useState<String[]>([]);
 
   const { startUpload } = useUploadThing("media");
 
   async function onSubmit(values: z.infer<typeof onboardingValidation>) {
-    const blob = values.profile_photo;
+    // const blob = values.profile_photo;
 
-    const hasImageChanged = isBase64Image(blob);
+    // const hasImageChanged = isBase64Image(blob);
 
-    if (hasImageChanged) {
-      const imgRes = await startUpload(Files);
+    // if (hasImageChanged) {
+    //   const imgRes = await startUpload(Files);
 
-      if (imgRes && imgRes[0].url) {
-        values.profile_photo = imgRes[0].url;
-      }
-    }
+    //   if (imgRes && imgRes[0].url) {
+    //     values.profile_photo = imgRes[0].url;
+    //   }
+    // }
+    router.push("/dashboard");
   }
 
   const handleImage = (
@@ -86,7 +91,7 @@ const AccountProfile = ({ btnTitle }: AccountProfileProps) => {
           name="profile_photo"
           render={({ field }) => (
             <FormItem className="  flex items-center gap-4">
-              <FormLabel className=" flex h-24 w-24 items-center justify-center rounded-full bg-black/10">
+              <FormLabel className=" flex h-24 w-24 items-center justify-center rounded-full bg-gray-300/10">
                 {field.value.length ? (
                   <Image
                     src={field.value}
@@ -127,7 +132,11 @@ const AccountProfile = ({ btnTitle }: AccountProfileProps) => {
                 Name
               </FormLabel>
               <FormControl className="flex-1 text-base-semibold text-gray-200">
-                <Input type="text" className="py-4 rounded-md px-3 text-gray-100" {...field} />
+                <Input
+                  type="text"
+                  className="py-4 rounded-md px-3 text-gray-100"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -142,7 +151,11 @@ const AccountProfile = ({ btnTitle }: AccountProfileProps) => {
                 Username
               </FormLabel>
               <FormControl className="flex-1 text-base-semibold text-gray-200">
-                <Input type="text" className="py-4 rounded-md px-3 text-gray-100" {...field} />
+                <Input
+                  type="text"
+                  className="py-4 rounded-md px-3 text-gray-100"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -157,13 +170,48 @@ const AccountProfile = ({ btnTitle }: AccountProfileProps) => {
                 Bio
               </FormLabel>
               <FormControl className="flex-1 text-base-semibold text-gray-200">
-                <Textarea rows={10} className="py-4 rounded-md px-3 text-gray-100" {...field} />
+                <Textarea
+                  rows={10}
+                  className="py-4 rounded-md px-3 text-gray-100"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-        <Button  className="!bg-primary-500 font-semibold text-xl font-sans">
+
+        <div>
+          <h1 className="text-white font-bold font-sans text-2xl">
+            Select Hobbies
+          </h1>
+          <div className="flex flex-wrap items-center gap-4">
+            {hobbies.map((item, i) => {
+              const isHobby = hobby.includes(item);
+              return (
+                <div
+                  key={i}
+                  onClick={() => {
+                    if (isHobby) {
+                      const idx = hobby.findIndex((a) => a == item);
+                      hobby.splice(idx, 1);
+                      setHobby([...hobby]);
+                      return;
+                    }
+                    setHobby([...hobby, item]);
+                  }}
+                  className={`${
+                    isHobby ? "bg-red-400" : "bg-gray-300/10"
+                  } px-4 rounded-full py-2  transition-colors ease-in cursor-pointer text-white font-sans font-bold `}
+                >
+                  <h1 className="text-white">{item}</h1>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        <Button className="!bg-primary-500 font-semibold text-xl mb-3 font-sans">
           Submit
         </Button>
       </form>

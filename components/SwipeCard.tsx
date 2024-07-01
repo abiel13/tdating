@@ -27,9 +27,10 @@ const SwipeCard = ({ images, name, Age, desc }: SwipeCardI) => {
       e.stopPropagation();
       distX = e.touches[0].screenX - startX;
       distY = e.touches[0].screenY - startY;
-      console.log(distX, distY);
+
       if (cardRef.current) {
         const isValidRotate = -30 < distX && distX < 30;
+
         if (!isValidRotate) return;
         cardRef.current.style.transform = `rotate(${distX}deg)`;
       }
@@ -37,7 +38,9 @@ const SwipeCard = ({ images, name, Age, desc }: SwipeCardI) => {
 
     const handleTouchend = (e: TouchEvent) => {
       e.stopPropagation();
-      cardRef.current.style.transform = `rotate(0deg)`;
+      if (cardRef?.current) {
+        cardRef.current.style.transform = `rotate(0deg)`;
+      }
     };
 
     const handleMouseMove = (e: MouseEvent) => {
@@ -45,9 +48,11 @@ const SwipeCard = ({ images, name, Age, desc }: SwipeCardI) => {
       distX = e.screenX - startX;
       distY = e.screenY - startY;
       if (cardRef.current) {
+        cardRef.current.style.transform = `rotate(${distX}deg, ${distY}deg)`;
+
         const isValidRotate = -30 < distX && distX < 30;
+
         if (!isValidRotate) return;
-        cardRef.current.style.transform = `rotate(${distX}deg)`;
       }
     };
 
