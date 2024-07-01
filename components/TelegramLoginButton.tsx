@@ -5,7 +5,12 @@ import { useRouter } from "next/navigation";
 
 const TelegramLoginButton = () => {
   const router = useRouter();
-
+  // Define the callback function
+  const onTelegramAuth = (user: any) => {
+    document.cookie = `tdating-user-data=${user}`;
+    router.push("/onboarding");
+  };
+  
   useEffect(() => {
     const script = document.createElement("script");
     script.src = "https://telegram.org/js/telegram-widget.js?22";
@@ -15,13 +20,7 @@ const TelegramLoginButton = () => {
     script.setAttribute("data-onauth", "onTelegramAuth(user)");
     script.setAttribute("data-request-access", "write");
     document.getElementById("telegram-login-container")!.appendChild(script);
-  }, []);
-
-  // Define the callback function
-  const onTelegramAuth = (user: any) => {
-    document.cookie = `tdating-user-data=${user}`;
-    router.push("/onboarding");
-  };
+  }, [onTelegramAuth]);
 
   useEffect(() => {
     window.onTelegramAuth = onTelegramAuth;

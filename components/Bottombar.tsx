@@ -6,10 +6,10 @@ import { usePathname } from "next/navigation";
 import React from "react";
 
 const Bottombar = () => {
+  const pathname = usePathname();
   return (
     <section className="bg-[#0b0c0b] h-[10%] fixed z-50 bottom-0 flex md:hidden w-full items-centerbg-[#0b0c0b] justify-around  items-center">
       {sidebarlinks.map((item, i) => {
-        const pathname = usePathname();
         const active =
           item.href === pathname ||
           (pathname.startsWith(`${item.href}/`) && item.href !== "/dashboard");
