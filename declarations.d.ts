@@ -1,7 +1,7 @@
 declare module "bcrypt";
 
 interface Window {
-  onTelegramAuth: (user: {
+  onTelegramAuth?: (user: {
     id: number;
     first_name: string;
     last_name: string;
