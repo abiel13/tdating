@@ -1,11 +1,10 @@
-'use client'
+"use client";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 const TelegramLoginButton = () => {
   const router = useRouter();
 
-  // Define the callback function
   const onTelegramAuth = (user: any) => {
     console.log(user); // This will log the Telegram username and ID
     document.cookie = `tdating-user-data=${JSON.stringify(user)}`; // Ensure the user object is serialized to JSON string
@@ -23,20 +22,21 @@ const TelegramLoginButton = () => {
     script.setAttribute("data-size", "large");
     script.setAttribute("data-onauth", "onTelegramAuth(user)");
     script.setAttribute("data-request-access", "write");
-    document.getElementById("telegram-login-container")!.appendChild(script);
+    const container = document.getElementById("telegram-login-container");
+
+    if (container) {
+      container.appendChild(script);
+    }
 
     return () => {
-      // Clean up by removing the script and clearing the window.onTelegramAuth
-      document.getElementById("telegram-login-container")!.removeChild(script);
+      if (container) {
+        container.removeChild(script);
+      }
       window.onTelegramAuth = undefined;
     };
   }, [onTelegramAuth]);
 
-  return (
-    <div id="telegram-login-container" className="px-">
-      Login
-    </div>
-  );
+  return <div id="telegram-login-container" className="px-" />;
 };
 
 export default TelegramLoginButton;
