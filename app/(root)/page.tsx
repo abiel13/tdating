@@ -1,9 +1,27 @@
+// import FooterCarousel from "@/components/FooterCarousel";
 import FooterCarousel from "@/components/FooterCarousel";
 import TelegramLoginButton from "@/components/TelegramLoginButton";
 import { Separator } from "@/components/ui/separator";
+import { cookies } from "next/headers";
 import Image from "next/image";
+import { redirect } from "next/navigation";
 
 export default function Home() {
+  const isloggedIn = cookies().get("tdating-user-data");
+  const isOnboarded = cookies().get("tdating-user");
+
+  if (isOnboarded) {
+    redirect("/dashboard");
+  }
+
+  if (isloggedIn) {
+    const { id, first_name, last_name, username, photo_url } =
+      isloggedIn as any;
+    redirect(
+      `/onboarding?id=${id}&first_name&=${first_name}&last_name=${last_name}&username=${username}&photo_url=${photo_url}`
+    );
+  }
+
   return (
     <section className=" relative w-screen min-h-screen bg-[#0b0b0a]">
       <div className="fixed left-[50%] top-[0%] w-[100vw] h-[100vh] -translate-x-[50%] ">

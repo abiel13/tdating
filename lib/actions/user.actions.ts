@@ -48,6 +48,18 @@ export async function getuser(id: string) {
   }
 }
 
+export async function getuserName(username: string) {
+  try {
+    const user = await User.find({ username });
+    if (!user) {
+      return { message: "User not found" };
+    }
+    return { data: user };
+  } catch (error: any) {
+    message: error.message;
+  }
+}
+
 export async function updateUser(id: string, updates: any) {
   try {
     if (updates.password) {

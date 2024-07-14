@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "node ./lib/socket/socket.ts",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
@@ -15,6 +15,8 @@
     "@radix-ui/react-popover": "^1.1.0",
     "@radix-ui/react-separator": "^1.0.3",
     "@radix-ui/react-slot": "^1.1.0",
+    "@types/mongoose": "^5.11.97",
+    "@types/socket.io": "^3.0.2",
     "@uploadthing/react": "^6.6.0",
     "axios": "^1.7.2",
     "bcrypt": "^5.1.1",
@@ -41,7 +43,7 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
-    "@types/node": "^20",
+    "@types/node": "^20.14.10",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "eslint": "^8",
