@@ -79,20 +79,26 @@
 //     </section>
 //   );
 // }
-'use client'
-import { useRouter } from "next/navigation";
+
+import Testbutton, { RouteButton } from "@/components/testbutton";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 import React from "react";
 
 const Home = () => {
-  const router = useRouter();
+  const isloggedIn = cookies().get("tdating-user-data");
+  const isOnboarded = cookies().get("tdating-user");
+  const test = cookies().get("testing");
+
   return (
-    <div className="flex items-center justify-center">
-      <button
-        onClick={() => router.push("/dashboard")}
-        className="bg-blue-400 rounded-lg px-4 py-3 text-white font-bold text-xl"
-      >
-        go to dashboard
-      </button>
+    <div className="flex items-center justify-center flex-col">
+      <Testbutton />
+      <p>
+        {isloggedIn?.value}
+        {isOnboarded?.value}
+        {test?.value}
+      </p>
+      <RouteButton />
     </div>
   );
 };
