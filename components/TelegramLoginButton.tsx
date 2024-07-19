@@ -6,15 +6,13 @@ const TelegramLoginButton = () => {
   const router = useRouter();
 
   const onTelegramAuth = (user: any) => {
-    console.log(user); // This will log the Telegram username and ID
+    console.log(user);
     document.cookie = `tdating-user-data=${JSON.stringify(user)}`;
-     // Ensure the user object is serialized to JSON string
      alert(user.toString());
     router.push("/onboarding");
   };
 
   useEffect(() => {
-    // Ensure window.onTelegramAuth is defined before the script is loaded
     window.onTelegramAuth = onTelegramAuth;
 
     const script = document.createElement("script");
