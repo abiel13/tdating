@@ -80,25 +80,18 @@
 //   );
 // }
 
+import TelegramLoginButton from "@/components/TelegramLoginButton";
 import Testbutton, { RouteButton } from "@/components/testbutton";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import React from "react";
 
 const Home = () => {
-  const isloggedIn = cookies().get("tdating-user-data");
-  const isOnboarded = cookies().get("tdating-user");
-  const test = cookies().get("testing");
+
 
   return (
     <div className="flex items-center justify-center flex-col">
-      <Testbutton />
-      <p>
-        {isloggedIn?.value}
-        {isOnboarded?.value}
-        {test?.value}
-      </p>
-      <RouteButton />
+   <TelegramLoginButton />
     </div>
   );
 };
