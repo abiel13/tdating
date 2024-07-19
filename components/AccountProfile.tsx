@@ -18,34 +18,23 @@ import * as z from "zod";
 import Image from "next/image";
 import { Textarea } from "@/components/ui/textarea";
 import { getLocation, isBase64Image } from "@/lib/utils/utils";
-import { useUploadThing } from "@/lib/uploadthing";
 import { useRouter } from "next/navigation";
 import { hobbies } from "@/constants/hobbies";
 import { getGeoLocation } from "@/lib/location";
+import SelectImages from "./SelectImages";
 
 interface AccountProfileProps {
   btnTitle: string;
+  userInfo: any;
 }
 
-const AccountProfile = ({ btnTitle }: AccountProfileProps) => {
+const AccountProfile = ({ btnTitle, userInfo }: AccountProfileProps) => {
   const [Files, setFiles] = useState<File[]>([]);
   const router = useRouter();
   const [hobby, setHobby] = useState<String[]>([]);
   const [location, setLocation] = useState<string | null>("");
-  const { startUpload } = useUploadThing("media");
 
   async function onSubmit(values: z.infer<typeof onboardingValidation>) {
-    // const blob = values.profile_photo;
-
-    // const hasImageChanged = isBase64Image(blob);
-
-    // if (hasImageChanged) {
-    //   const imgRes = await startUpload(Files);
-
-    //   if (imgRes && imgRes[0].url) {
-    //     values.profile_photo = imgRes[0].url;
-    //   }
-    // }
     router.push("/dashboard");
   }
 
@@ -73,10 +62,10 @@ const AccountProfile = ({ btnTitle }: AccountProfileProps) => {
   const form = useForm({
     resolver: zodResolver(onboardingValidation),
     defaultValues: {
-      profile_photo: "",
-      name: "",
+      profile_photo: userInfo.photo_url || "",
+      name: `${userInfo.first_name} ${userInfo.last_name}` || "",
       bio: "",
-      username: "",
+      username: userInfo.username || "",
     },
   });
 
@@ -90,7 +79,7 @@ const AccountProfile = ({ btnTitle }: AccountProfileProps) => {
           location?.latitude,
           location.longitude
         );
-        
+
         setLocation(getGeo);
       } catch (error) {
         console.error("Error getting location:", error);
@@ -173,7 +162,7 @@ const AccountProfile = ({ btnTitle }: AccountProfileProps) => {
                 <Input
                   type="text"
                   className="py-4 rounded-md px-3 text-gray-100"
-                  {...field}
+                  value={field.value}
                 />
               </FormControl>
               <FormMessage />
@@ -234,7 +223,7 @@ const AccountProfile = ({ btnTitle }: AccountProfileProps) => {
             })}
           </div>
         </div>
-
+        <SelectImages />
         <Button className="!bg-primary-500 font-semibold text-xl mb-3 font-sans">
           Submit
         </Button>

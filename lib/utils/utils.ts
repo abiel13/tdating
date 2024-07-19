@@ -7,41 +7,21 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-// created by chatgpt
 export function isBase64Image(imageData: string) {
   const base64Regex = /^data:image\/(png|jpe?g|gif|webp);base64,/;
   return base64Regex.test(imageData);
 }
 
-// created by chatgpt
-export function formatDateString(dateString: string) {
-  const options: Intl.DateTimeFormatOptions = {
-    year: "numeric",
-    month: "short",
-    day: "numeric",
+function imageToBase64(file:File, callback:Function) {
+  const reader = new FileReader();
+
+  reader.onloadend = function() {
+      callback(reader.result);
   };
 
-  const date = new Date(dateString);
-  const formattedDate = date.toLocaleDateString(undefined, options);
-
-  const time = date.toLocaleTimeString([], {
-    hour: "numeric",
-    minute: "2-digit",
-  });
-
-  return `${time} - ${formattedDate}`;
+  reader.readAsDataURL(file);
 }
 
-// created by chatgpt
-export function formatThreadCount(count: number): string {
-  if (count === 0) {
-    return "No Threads";
-  } else {
-    const threadCount = count.toString().padStart(2, "0");
-    const threadWord = count === 1 ? "Thread" : "Threads";
-    return `${threadCount} ${threadWord}`;
-  }
-}
 
 interface gLT {
   longitude: number;
@@ -61,19 +41,23 @@ export async function getLocation(): Promise<any> {
           switch (error.code) {
             case error.PERMISSION_DENIED:
               console.log("User denied the request for Geolocation.");
-              errorMessage = "You denied the request for Geolocation. Please enable it to use location-based features.";
+              errorMessage =
+                "You denied the request for Geolocation. Please enable it to use location-based features.";
               break;
             case error.POSITION_UNAVAILABLE:
               console.log("Location information is unavailable.");
-              errorMessage = "Location information is unavailable. Please try again later.";
+              errorMessage =
+                "Location information is unavailable. Please try again later.";
               break;
             case error.TIMEOUT:
               console.log("The request to get user location timed out.");
-              errorMessage = "The request to get your location timed out. Please try again.";
+              errorMessage =
+                "The request to get your location timed out. Please try again.";
               break;
             default:
               console.log("An unknown error occurred.");
-              errorMessage = "An unknown error occurred while fetching your location. Please try again.";
+              errorMessage =
+                "An unknown error occurred while fetching your location. Please try again.";
               break;
           }
           reject(errorMessage);
