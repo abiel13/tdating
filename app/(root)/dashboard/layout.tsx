@@ -14,7 +14,6 @@ export default function DashboardLayout({
         <Topbar />
         {children}
       </section>
-
       <Bottombar />
     </main>
   );

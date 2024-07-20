@@ -12,7 +12,7 @@ export function isBase64Image(imageData: string) {
   return base64Regex.test(imageData);
 }
 
-function imageToBase64(file:File, callback:Function) {
+export function imageToBase64(file:File, callback:Function) {
   const reader = new FileReader();
 
   reader.onloadend = function() {

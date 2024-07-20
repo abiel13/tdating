@@ -32,10 +32,23 @@ const AccountProfile = ({ btnTitle, userInfo }: AccountProfileProps) => {
   const [Files, setFiles] = useState<File[]>([]);
   const router = useRouter();
   const [hobby, setHobby] = useState<String[]>([]);
+  const [displayImages, setdisplayImages] = useState<String[]>([]);
   const [location, setLocation] = useState<string | null>("");
+  const [additionalError, setAdditionalError] = useState({
+    hobbies: "",
+    displayImages: "",
+  });
 
   async function onSubmit(values: z.infer<typeof onboardingValidation>) {
-    router.push("/dashboard");
+    if (hobby.length < 5) {
+      setAdditionalError({
+        ...additionalError,
+        hobbies: "Must Select at least 5 hobbies",
+      });
+      return;
+    }
+
+    console.log(values);
   }
 
   const handleImage = (
@@ -222,6 +235,9 @@ const AccountProfile = ({ btnTitle, userInfo }: AccountProfileProps) => {
               );
             })}
           </div>
+          {additionalError.hobbies.length && (
+            <p className="text-red-500 font-bold">{additionalError.hobbies}</p>
+          )}
         </div>
         <SelectImages />
         <Button className="!bg-primary-500 font-semibold text-xl mb-3 font-sans">

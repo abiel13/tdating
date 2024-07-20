@@ -1,6 +1,13 @@
+import { imageToBase64 } from "@/lib/utils/utils";
 import React from "react";
 
 const SelectImages = () => {
+  const handlechange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    imageToBase64(e.target.files![0], (value: any) => {
+      
+    });
+  };
+
   return (
     <div className="w-full mt-12 flex flex-col gap-8">
       <div>
@@ -13,8 +20,16 @@ const SelectImages = () => {
 
       <div className=" px-3 py-4  border-dashed border-2  rounded-xl min-h-[230px] grid grid-cols-2 gap-x-4 md:grid-cols-3">
         {Array.from({ length: 6 }).map((item, i) => (
-          <label key={i} className=" rounded-lg w-full mx-2 my-2 h-[300px] border-red-400 border border-dashed">
-            <input type="file" accept="image" className="w-0 h-0" />
+          <label
+            key={i}
+            className=" rounded-lg w-full mx-2 my-2 h-[300px] border-red-400 border border-dashed"
+          >
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handlechange}
+              className="w-0 h-0"
+            />
           </label>
         ))}
       </div>
