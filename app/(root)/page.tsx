@@ -25,7 +25,7 @@
     }
 
     return (
-      <section className=" relative w-screen min-h-screen bg-[#0b0b0a]">
+      <section className="  w-screen min-h-screen bg-[#0b0b0a]">
         <div className="fixed left-[50%] top-[0%] w-[100vw] h-[100vh] -translate-x-[50%] ">
           <div className="relative w-full h-full">
             <Image className="object-cover" src={"/bg.jpeg"} alt="logo" fill />
@@ -36,7 +36,7 @@
             <h1 className="text-white text-[3rem] md:text-[6rem] font-extrabold">
               Swipe Right &#174;{" "}
             </h1>
-            <div className="flex items-center gap-4 flex-col md:flex-row mt-[1rem] ">
+            <div className="flex items-center gap-4 flex-col md:flex-row mt-[1rem] relative">
               <TelegramLoginButton />
             </div>
           </div>
