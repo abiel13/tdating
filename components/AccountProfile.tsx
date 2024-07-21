@@ -17,11 +17,14 @@ import { onboardingValidation } from "@/lib/validations/onboarding";
 import * as z from "zod";
 import Image from "next/image";
 import { Textarea } from "@/components/ui/textarea";
-import { getLocation, isBase64Image } from "@/lib/utils/utils";
+import { getLocation, isBase64Image, validateAge } from "@/lib/utils/utils";
 import { useRouter } from "next/navigation";
 import { hobbies } from "@/constants/hobbies";
 import { getGeoLocation } from "@/lib/location";
 import SelectImages from "./SelectImages";
+import { createUser } from "@/lib/actions/user.actions";
+import DatePicker from "./DatePicker";
+import GenderSelectComponent from "./GenderSelect";
 
 interface AccountProfileProps {
   btnTitle: string;
@@ -30,13 +33,19 @@ interface AccountProfileProps {
 
 const AccountProfile = ({ btnTitle, userInfo }: AccountProfileProps) => {
   const [Files, setFiles] = useState<File[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [date, setDate] = useState<Date>();
+  const [coordinates, setcoordinates] = useState<any>();
   const router = useRouter();
-  const [hobby, setHobby] = useState<String[]>([]);
-  const [displayImages, setdisplayImages] = useState<String[]>([]);
+  const [selectedGender, setSelectedGender] = useState("");
+  const [hobby, setHobby] = useState<string[]>([]);
+  const [images, setImages] = useState<string[]>([]);
   const [location, setLocation] = useState<string | null>("");
   const [additionalError, setAdditionalError] = useState({
     hobbies: "",
     displayImages: "",
+    gender: "",
+    dateOfBirth: "",
   });
 
   async function onSubmit(values: z.infer<typeof onboardingValidation>) {
@@ -47,8 +56,58 @@ const AccountProfile = ({ btnTitle, userInfo }: AccountProfileProps) => {
       });
       return;
     }
+    if (validateAge(date!)) {
+      setAdditionalError({
+        ...additionalError,
+        dateOfBirth: validateAge(date!) || "",
+      });
+      return;
+    }
+    if (images.length < 3) {
+      setAdditionalError({
+        ...additionalError,
+        displayImages: "Must Select at least 3 images",
+      });
+      return;
+    }
+    if (!selectedGender.length) {
+      setAdditionalError({
+        ...additionalError,
+        gender: "gender is a required field",
+      });
+      return;
+    }
 
-    console.log(values);
+    setAdditionalError({
+      hobbies: "",
+      displayImages: "",
+      gender: "",
+      dateOfBirth: "",
+    });
+    try {
+      setLoading(true);
+      const newUser = await createUser({
+        username: values.username,
+        fullName: values.name,
+        dateOfBirth: date!,
+        gender: selectedGender,
+        interests: hobby,
+        bio: values.bio,
+        profilePictures: [values.profile_photo, ...images],
+        location: {
+          type: "Point",
+          coordinates:[coordinates.latitude, coordinates.longitude],
+        },
+        telegramChatId: userInfo.id,
+      });
+
+      console.log(newUser);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+
   }
 
   const handleImage = (
@@ -86,7 +145,7 @@ const AccountProfile = ({ btnTitle, userInfo }: AccountProfileProps) => {
     (async function () {
       try {
         const location = await getLocation();
-        console.log(location);
+        setcoordinates(location);
         // Use the location object as needed
         const getGeo = await getGeoLocation(
           location?.latitude,
@@ -182,6 +241,20 @@ const AccountProfile = ({ btnTitle, userInfo }: AccountProfileProps) => {
             </FormItem>
           )}
         />
+        <div>
+          <h2 className="font-bold text-white mb-2">Select Date of Birth</h2>
+          <DatePicker date={date!} setDate={setDate} />
+          {additionalError.dateOfBirth && (
+            <p className="text-red-500 font-bold">
+              {additionalError.dateOfBirth}
+            </p>
+          )}
+        </div>
+        <GenderSelectComponent
+          selectedGender={selectedGender}
+          error={additionalError.gender}
+          setSelectedGender={setSelectedGender}
+        />
         <FormField
           control={form.control}
           name="bio"
@@ -201,6 +274,7 @@ const AccountProfile = ({ btnTitle, userInfo }: AccountProfileProps) => {
             </FormItem>
           )}
         />
+
         <div>
           <h1 className="font-bold text-white font-sans text-3xl">
             Location:{" "}
@@ -239,9 +313,16 @@ const AccountProfile = ({ btnTitle, userInfo }: AccountProfileProps) => {
             <p className="text-red-500 font-bold">{additionalError.hobbies}</p>
           )}
         </div>
-        <SelectImages />
-        <Button className="!bg-primary-500 font-semibold text-xl mb-3 font-sans">
-          Submit
+        <SelectImages
+          images={images}
+          setImages={setImages}
+          error={additionalError.displayImages}
+        />
+        <Button
+          disabled={loading}
+          className="!bg-primary-500 font-semibold text-xl mb-3 font-sans capitalize"
+        >
+          {loading ? "loading" : "submit"}
         </Button>
       </form>
     </Form>

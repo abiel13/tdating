@@ -7,16 +7,6 @@ export const sidebarlinks = [
     Icon: Home,
   },
   {
-    label: "Explore",
-    href: "/dashboard/explore",
-    Icon: SearchCheck,
-  },
-  {
-    label: "likes | Suggestions",
-    href: "/dashboard/suggestions",
-    Icon: Star,
-  },
-  {
     label: "Messages",
     href: "/dashboard/messages",
     Icon: MessageCircle,

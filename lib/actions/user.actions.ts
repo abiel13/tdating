@@ -4,8 +4,6 @@ import User from "../models/User";
 
 export async function createUser({
   username,
-  email,
-  password,
   fullName,
   dateOfBirth,
   gender,
@@ -14,14 +12,10 @@ export async function createUser({
   profilePictures,
   location,
   telegramChatId,
-}: CreateUserParams): Promise<void> {
-  const hashedPassword = await bcrypt.hash(password, 10);
-
+}: CreateUserParams): Promise<any> {
   // Create a new user instance
   const newUser = new User({
     username,
-    email,
-    password: hashedPassword,
     fullName,
     dateOfBirth,
     gender,
@@ -34,6 +28,8 @@ export async function createUser({
 
   // Save the user to the database
   const savedUser = await newUser.save();
+
+  return savedUser;
 }
 
 export async function getuser(id: string) {
