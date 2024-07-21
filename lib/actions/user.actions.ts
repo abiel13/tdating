@@ -1,6 +1,7 @@
 "use server";
 import bcrypt from "bcrypt";
 import User from "../models/User";
+import { connectToDB } from "../db/connect.";
 
 export async function createUser({
   username,
@@ -14,22 +15,28 @@ export async function createUser({
   telegramChatId,
 }: CreateUserParams): Promise<any> {
   // Create a new user instance
-  const newUser = new User({
-    username,
-    fullName,
-    dateOfBirth,
-    gender,
-    interests,
-    bio,
-    profilePictures,
-    location,
-    telegramChatId,
-  });
+  try {
+    await connectToDB();
+    const newUser = new User({
+      username,
+      fullName,
+      dateOfBirth,
+      gender,
+      interests,
+      bio,
+      profilePictures,
+      location,
+      telegramChatId,
+    });
 
-  // Save the user to the database
-  const savedUser = await newUser.save();
+    await newUser.save();
 
-  return savedUser;
+    return JSON.parse(
+      JSON.stringify({ id: newUser._id, location: newUser.location })
+    );
+  } catch (error) {
+    throw error;
+  }
 }
 
 export async function getuser(id: string) {

@@ -96,18 +96,18 @@ const AccountProfile = ({ btnTitle, userInfo }: AccountProfileProps) => {
         profilePictures: [values.profile_photo, ...images],
         location: {
           type: "Point",
-          coordinates:[coordinates.latitude, coordinates.longitude],
+          coordinates: [coordinates.latitude, coordinates.longitude],
         },
         telegramChatId: userInfo.id,
       });
 
-      console.log(newUser);
+      document.cookie = `tdating-user=${JSON.stringify(newUser)}`;
+      router.push("/dashboard");
     } catch (error) {
       console.log(error);
     } finally {
       setLoading(false);
     }
-
   }
 
   const handleImage = (
