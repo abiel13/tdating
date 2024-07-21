@@ -64,5 +64,14 @@ body::-webkit-scrollbar {
 }
 
 #telegram-login-flirtgram_bot {
+  display: block;
+  margin: 0 auto; /* Centers the iframe horizontally */
   position: absolute;
+border-radius: .4rem;
+  background: blue;
+  top: 50%; /* Pushes the iframe down 50% from the top */
+  transform: translateY(-50%);
+  left:50%;
+  transform: translateX(-50%);
+
 }
