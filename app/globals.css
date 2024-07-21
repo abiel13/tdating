@@ -65,11 +65,10 @@ body::-webkit-scrollbar {
 
 #telegram-login-flirtgram_bot {
   display: block;
-  margin: 0 auto; /* Centers the iframe horizontally */
+  margin: 0 auto; 
   position: absolute;
 border-radius: .4rem;
-  background: blue;
-  top: 50%; /* Pushes the iframe down 50% from the top */
+  top: 50%;
   transform: translateY(-50%);
   left:50%;
   transform: translateX(-50%);

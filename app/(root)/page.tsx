@@ -42,7 +42,7 @@ export default function Home() {
               href={"/login"}
               className="bg-blue-400 rounded-lg px-4 py-2 text-white font-bold  cursor-pointer"
             >
-              Login
+              Login To Get Started
             </Link>
           </div>
         </div>

@@ -5,7 +5,7 @@ import Script from "next/script";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "Tinder Clone",
+  title: "FlirtGram",
   description: "Dating app for telegram",
 };
 
