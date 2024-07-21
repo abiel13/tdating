@@ -24,6 +24,15 @@
     --input: 240 5.9% 90%;
     --ring: 346.8 77.2% 49.8%;
     --radius: 0.5rem;
+    --gradient-top: linear-gradient(0deg, #08203e, #557c93, #64889d);
+    --gradient-right: linear-gradient(90deg, #08203e, #557c93, #64889d);
+    --gradient-bottom: linear-gradient(180deg, #08203e, #557c93, #64889d);
+    --gradient-left: linear-gradient(270deg, #08203e, #557c93, #64889d);
+    --gradient-top-right: linear-gradient(45deg, #08203e, #557c93, #64889d);
+    --gradient-bottom-right: linear-gradient(135deg, #08203e, #557c93, #64889d);
+    --gradient-top-left: linear-gradient(225deg, #08203e, #557c93, #64889d);
+    --gradient-bottom-left: linear-gradient(315deg, #08203e, #557c93, #64889d);
+    --gradient-radial: radial-gradient(#08203e, #557c93, #64889d);
   }
 
   .dark {
@@ -63,14 +72,40 @@ body::-webkit-scrollbar {
   width: 2px;
 }
 
-#telegram-login-flirtgram_bot {
-  display: block;
-  margin: 0 auto; 
-  position: absolute;
-border-radius: .4rem;
-  top: 50%;
-  transform: translateY(-50%);
-  left:50%;
-  transform: translateX(-50%);
 
+
+.gradient-top {
+  background: var(--gradient-top);
+}
+
+.gradient-right {
+  background: var(--gradient-right);
+}
+
+.gradient-bottom {
+  background: var(--gradient-bottom);
+}
+
+.gradient-left {
+  background: var(--gradient-left);
+}
+
+.gradient-top-right {
+  background: var(--gradient-top-right);
+}
+
+.gradient-bottom-right {
+  background: var(--gradient-bottom-right);
+}
+
+.gradient-top-left {
+  background: var(--gradient-top-left);
+}
+
+.gradient-bottom-left {
+  background: var(--gradient-bottom-left);
+}
+
+.gradient-radial {
+  background: var(--gradient-radial);
 }

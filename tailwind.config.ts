@@ -1,13 +1,13 @@
-import type { Config } from "tailwindcss"
+import type { Config } from "tailwindcss";
 
 const config = {
   darkMode: ["class"],
   content: [
-    './pages/**/*.{ts,tsx}',
-    './components/**/*.{ts,tsx}',
-    './app/**/*.{ts,tsx}',
-    './src/**/*.{ts,tsx}',
-	],
+    "./pages/**/*.{ts,tsx}",
+    "./components/**/*.{ts,tsx}",
+    "./app/**/*.{ts,tsx}",
+    "./src/**/*.{ts,tsx}",
+  ],
   prefix: "",
   theme: {
     container: {
@@ -20,6 +20,42 @@ const config = {
     extend: {
       colors: {
         border: "hsl(var(--border))",
+        oxford_blue: {
+          DEFAULT: "#08203e",
+          100: "#02070d",
+          200: "#030d19",
+          300: "#051426",
+          400: "#071a33",
+          500: "#08203e",
+          600: "#12498d",
+          700: "#1c72da",
+          800: "#64a1eb",
+          900: "#b1d0f5",
+        },
+        air_force_blue: {
+          DEFAULT: "#557c93",
+          100: "#11191d",
+          200: "#22313a",
+          300: "#324a57",
+          400: "#436275",
+          500: "#557c93",
+          600: "#7197ad",
+          700: "#94b1c2",
+          800: "#b8cbd6",
+          900: "#dbe5eb",
+        },
+        air_force_blue2: {
+          DEFAULT: "#64889d",
+          100: "#141b1f",
+          200: "#27363f",
+          300: "#3b515e",
+          400: "#4f6c7d",
+          500: "#64889d",
+          600: "#829fb0",
+          700: "#a1b7c4",
+          800: "#c0cfd8",
+          900: "#e0e7eb",
+        },
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
@@ -75,6 +111,6 @@ const config = {
     },
   },
   plugins: [require("tailwindcss-animate")],
-} satisfies Config
+} satisfies Config;
 
-export default config
+export default config;
