@@ -5,14 +5,15 @@ import { LogOut } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
+import Logo from "./Logo";
 
 const LeftSidebar = () => {
   const pathname = usePathname();
   return (
-    <section className="bg-[#0b0c0b] border-r border-gray-400  w-[20%] h-full px-3 py-3 md:flex flex-col justify-between hidden">
+    <section className="bg-air_force_blue-100 border-r border-gray-400  w-[20%] h-full px-3 py-3 md:flex flex-col justify-between hidden">
       <div className="py-4 px  mb-[2rem]">
         <h1 className="text-white font-bold text-3xl ">
-          T- <span className="text-primary">Dating</span>
+          <Logo />
         </h1>
       </div>
 
