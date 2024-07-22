@@ -4,7 +4,7 @@ import React from "react";
 
 const Reviews = () => {
   return (
-    <div className="min-h-[50vh] flex flex-col items-start px-3 md:px-[3rem] mt-[1rem] gap-8 my-8">
+    <div className="min-h-[50vh] flex flex-col items-start px-3 md:px-[3rem] mt-[20vh] gap-8 my-8">
       <h3 className="font-sans font-bold text-3xl">Reviews</h3>
       <div className="bg-_force_blue-500 py-5 w-full px-5 flex justify-between md:flex-row flex-col gap-8">
         {reviews.map((item, i) => (

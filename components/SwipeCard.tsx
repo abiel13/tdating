@@ -28,7 +28,7 @@ const SwipeCard = ({
       id="test-card"
       className={` ${
         isOpaque ? "opacity-100 scale-100" : "opacity-0 scale-0"
-      } bg-gray-600 absolute md:w-[370px] transition-all ease-in-out duration-75 w-full md:h-[570px] h-[80%] rounded-t-xl `}
+      } bg-gray-600 absolute md:w-[370px] transition-all ease-in-out duration-300 w-full md:h-[570px] h-[80%] rounded-t-xl `}
     >
       <div className="relative w-full h-[100%] md:h-[100%]">
         <Image

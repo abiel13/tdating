@@ -14,10 +14,21 @@ const HeroComp = () => {
           meet new people online
         </h2>
 
-        <p className="text-gray-400 font-sans text-lg md:w-[60%] text-center md:text-justify">
-          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ex placeat
-          neque veniam quo modi ipsam exercitationem eum, reprehenderit iste
-          mollitia a, animi quasi? Doloribus, maiores?
+        <p className="text-gray-400 font-sans text-lg md:w-[75%] text-center md:text-justify">
+          Welcome to{" "}
+          <span className="text-white font-bold text-2xl font-sans italics">
+            Flirt <span className="text-primary ">Gram</span>
+          </span>{" "}
+          the ultimate Telegram-based dating app! Discover love, make new
+          friends, and expand your social circle all in one place. With our
+          intuitive swipe feature, you can easily find matches, chat instantly
+          through Telegram's secure messaging, and connect with people who share
+          your interests.
+        </p>
+        <p className="text-gray-400 font-sans text-lg md:w-[75%] text-center md:text-justify">
+          Whether you're looking for a romantic partner or new friendships, our
+          app offers a safe and fun environment to meet new people. Join us
+          today and start your journey to meaningful connections!
         </p>
         <Link
           className="bg-air_force_blue px-4 py-2  text-white font-bold font-sans rounded-lg w-full text-center md:w-fit"
