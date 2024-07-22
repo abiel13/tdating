@@ -1,17 +1,16 @@
 "use client";
-import { useEffect } from "react";
+import { useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
-
 
 const TelegramLoginButton = () => {
   const router = useRouter();
 
-  const onTelegramAuth = (user: any) => {
+  const onTelegramAuth = useCallback((user: any) => {
     console.log(user);
     document.cookie = `tdating-user-data=${JSON.stringify(user)}`;
     alert(user.toString());
     router.push("/onboarding");
-  };
+  }, [router]);
 
   useEffect(() => {
     window.onTelegramAuth = onTelegramAuth;

@@ -22,7 +22,12 @@ const Features = () => {
       <h1 className="font-bold text-3xl font-sans">Features</h1>
       <div className="grid gird-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-5 gap-y-6">
         {features.map((item, i) => (
-          <FeatturesCard title={item.title} Icon={item.Icon} desc={item.desc} />
+          <FeatturesCard
+            key={i}
+            title={item.title}
+            Icon={item.Icon}
+            desc={item.desc}
+          />
         ))}
       </div>
     </div>
