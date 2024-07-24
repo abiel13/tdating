@@ -85,7 +85,7 @@ export const validateAge = (dateOfBirth:Date) => {
     age--;
   }
 
-  if (age < 1) {
+  if (age < 18) {
     return "You must be at least 18 years old.";
   }
 

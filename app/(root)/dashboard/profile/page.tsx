@@ -7,7 +7,7 @@ import { useratom } from "@/lib/atoms/user.atoms";
 import { getuserById, getuserName } from "@/lib/actions/user.actions";
 
 const UserProfile = () => {
-
+const user = useAtom(useratom) 
 
   useEffect(() => {
     (async function () {
