@@ -1,7 +1,7 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Script from "next/script";
-import { Provider } from "jotai";
+
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,7 +18,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`  ${inter.className}`}>
-        <Provider>{children}</Provider>
+     {children}
       </body>
       <Script src="https://telegram.org/js/telegram-web-app.js" defer></Script>
     </html>
