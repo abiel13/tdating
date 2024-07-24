@@ -1,20 +1,11 @@
-"use client";
 import { Separator } from "@/components/ui/separator";
 import Image from "next/image";
-import React, { useEffect } from "react";
-import { useAtom } from "jotai";
-import { useratom } from "@/lib/atoms/user.atoms";
-import { getuserById, getuserName } from "@/lib/actions/user.actions";
+import React from "react";
+import { getuserName } from "@/lib/actions/user.actions";
 
 const UserProfile = () => {
-const user = useAtom(useratom) 
 
-  useEffect(() => {
-    (async function () {
-      const data = await getuserName("abiqwel");
-      console.log(data);
-    })();
-  }, []);
+
 
   return (
     <div className="min-h-screen w-full  px-6 py-4">
