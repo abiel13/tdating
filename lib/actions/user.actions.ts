@@ -85,6 +85,7 @@ export async function getUserByLocation(
   maxDistance = "5000"
 ) {
   try {
+    await connectToDB();
     const users = await User.find({
       location: {
         $near: {

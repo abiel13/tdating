@@ -104,6 +104,7 @@ const AccountProfile = ({ btnTitle, userInfo }: AccountProfileProps) => {
       document.cookie = `firltgram-user=${JSON.stringify({
         id: newUser._id,
         username: newUser.username,
+        location: newUser.location,
       })}`;
       router.push("/dashboard");
     } catch (error) {

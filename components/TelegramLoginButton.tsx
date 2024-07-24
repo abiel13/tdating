@@ -19,6 +19,7 @@ const TelegramLoginButton = () => {
           const data = {
             id: userExist[0]._id,
             username: userExist[0].username,
+            location: userExist[0].location,
           };
           document.cookie = `flirtgram-user=${JSON.stringify(data)}`;
           router.push("/dashboard");
