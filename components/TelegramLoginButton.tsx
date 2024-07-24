@@ -12,14 +12,14 @@ const TelegramLoginButton = () => {
 
       try {
         const { first_name, last_name, username, id, photo_url } = user;
-        alert(username);
+
         const userExist: any = await getuserName(username);
         if (userExist) {
           document.cookie = `flirtgram-user=${JSON.stringify({
             id: userExist._id,
             username: userExist.username,
           })}`;
-          alert(true);
+
           router.push("/dashboard");
         } else {
           router.push(

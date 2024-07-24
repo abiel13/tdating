@@ -9,7 +9,8 @@ import { redirect } from "next/navigation";
 export default function Home() {
   const isloggedIn = cookies().get("flirtgram-user");
 
-  if (isloggedIn) {
+  if (isloggedIn?.value) {
+    alert("true should redirect");
     redirect("/dashboard");
   }
 
