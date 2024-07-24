@@ -31,7 +31,7 @@ const HeroComp = () => {
           today and start your journey to meaningful connections!
         </p>
         <Link
-          className="bg-air_force_blue px-4 py-2  text-white font-bold font-sans rounded-lg w-full text-center md:w-fit"
+          className="bg-air_force_blue px-4 py-2 shadow-lg text-white font-bold font-sans rounded-lg w-full text-center md:w-fit"
           href="/login"
         >
           Login Now

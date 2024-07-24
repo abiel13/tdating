@@ -18,7 +18,7 @@ export default function Home() {
 
   return (
     <>
-      <div className="gradient-right min-h-screen w-screen px-3 md:px-[3rem] py-8">
+      <div className="gradient-bottom md:gradient-right min-h-screen w-screen px-3 md:px-[3rem] py-8">
         <HeaderComp />
         <HeroComp />
       </div>
