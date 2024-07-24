@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
 
-
 // Configures mongoose to omit unknown fields in queries.
 // See https://mongoosejs.com/docs/guide.html#strictQuery for more information
 mongoose.set("strictQuery", true);
@@ -12,9 +11,9 @@ let isConnecting = false;
 
 export const connectToDB = async (): Promise<void> => {
   if (isConnecting) {
-    throw new Error("MongoDB connection is already in progress...");
+    return;
   } else if (isConnected) {
-    throw new Error("A connection to MongoDB has already been established");
+    return;
   }
 
   isConnecting = true;

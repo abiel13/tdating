@@ -39,7 +39,7 @@ export async function createUser({
   }
 }
 
-export async function getuser(id: string) {
+export async function getuserById(id: string) {
   try {
     const user = await User.findById(id);
     if (!user) {
@@ -53,13 +53,14 @@ export async function getuser(id: string) {
 
 export async function getuserName(username: string) {
   try {
+    await connectToDB();
     const user = await User.find({ username });
     if (!user) {
-      return { message: "User not found" };
+      return null;
     }
-    return { data: user };
+    return JSON.parse(JSON.stringify(user));
   } catch (error: any) {
-    message: error.message;
+    throw error;
   }
 }
 

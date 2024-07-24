@@ -7,21 +7,10 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 export default function Home() {
-  const isloggedIn = cookies().get("tdating-user-data");
-  const isOnboarded = cookies().get("tdating-user");
-
-  if (isOnboarded) {
-    redirect("/dashboard");
-  }
+  const isloggedIn = cookies().get("flirtgram-user");
 
   if (isloggedIn) {
-    const { id, first_name, last_name, username, photo_url } = JSON.parse(
-      isloggedIn.value
-    ) as any;
-
-    redirect(
-      `/onboarding?id=${id}&first_name=${first_name}&last_name=${last_name}&username=${username}&photo_url=${photo_url}`
-    );
+    redirect("/dashboard");
   }
 
   return (
@@ -50,8 +39,7 @@ export default function Home() {
       <Reviews />
       <div className="justify-center bg-air_force_blue-100 px-3 md:px-[3rem] flex items-center py-3  mt-[10vh]">
         <h3 className="text-gray-200 font-lg font-sans font-bold">
-          Copyright &copy;{" "}
-        <Logo otherStyles="text-sm" />
+          Copyright &copy; <Logo otherStyles="text-sm" />
         </h3>
       </div>
     </>

@@ -101,7 +101,10 @@ const AccountProfile = ({ btnTitle, userInfo }: AccountProfileProps) => {
         telegramChatId: userInfo.id,
       });
 
-      document.cookie = `tdating-user=${JSON.stringify(newUser)}`;
+      document.cookie = `firltgram-user=${JSON.stringify({
+        id: newUser._id,
+        username: newUser.username,
+      })}`;
       router.push("/dashboard");
     } catch (error) {
       console.log(error);

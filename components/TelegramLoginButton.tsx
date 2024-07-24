@@ -1,16 +1,36 @@
 "use client";
 import { useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
+import { getuserName } from "@/lib/actions/user.actions";
 
 const TelegramLoginButton = () => {
   const router = useRouter();
 
-  const onTelegramAuth = useCallback((user: any) => {
-    console.log(user);
-    document.cookie = `tdating-user-data=${JSON.stringify(user)}`;
-    alert(user.toString());
-    router.push("/onboarding");
-  }, [router]);
+  const onTelegramAuth = useCallback(
+    async (user: any) => {
+      console.log(user);
+
+      try {
+        const { first_name, last_name, username, id, photo_url } = user;
+        const userExist: any = await getuserName(username);
+        if (userExist) {
+          document.cookie = `flirtgram-user=${JSON.stringify({
+            id: userExist._id,
+            username: userExist.username,
+          })}`;
+
+          router.push("/dashboard");
+        } else {
+          router.push(
+            `/onboarding?id=${id}&first_name=${first_name}&last_name=${last_name}&username=${username}&photo_url=${photo_url}`
+          );
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    [router]
+  );
 
   useEffect(() => {
     window.onTelegramAuth = onTelegramAuth;
