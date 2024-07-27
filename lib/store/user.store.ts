@@ -1,5 +1,4 @@
 import { createStore } from "zustand/vanilla";
-import { getCookies } from "./store.helper";
 
 export interface User {
   location: Location;
@@ -37,21 +36,7 @@ export type userAction = {
   setUser: (user: SavedUser) => void;
 };
 
-const getSavedUser = async (): Promise<SavedUser | undefined> => {
-  try {
-    const saved = await getCookies("flirtgram-user");
-    if (saved) {
-      try {
-        return JSON.parse(saved.value) as SavedUser;
-      } catch (e) {
-        console.error("Failed to parse saved user", e);
-      }
-    }
-  } catch (error) {
-    console.error("Error fetching cookies", error);
-  }
-  return undefined;
-};
+export type userstore = userstate & userAction;
 
 const defaultInitState: userstate = {
   user: undefined,
@@ -59,16 +44,10 @@ const defaultInitState: userstate = {
 
 // Function to create the store
 export const createUserStore = (initState: userstate = defaultInitState) => {
-  const store = createStore<userstate & userAction>((set) => ({
+  const store = createStore<userstore>((set) => ({
     ...initState,
     setUser: (user: SavedUser) => set({ user }),
   }));
-
-  // Fetch and set the user data when creating the store
-  (async () => {
-    const user = await getSavedUser();
-    store.setState({ user });
-  })();
 
   return store;
 };
