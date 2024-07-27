@@ -19,7 +19,7 @@ export interface User {
 
 export interface SavedUser {
   location: Location;
-  _id: string;
+  id: string;
   username: string;
 }
 

@@ -1,14 +1,35 @@
 "use client";
 
-import { sidebarlinks } from "@/constants/sidebarlinks";
 import { LogOut } from "lucide-react";
+import { Home, MessageCircle, SearchCheck, Star, User } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
 import Logo from "./Logo";
+import { useUserStore } from "@/providers/user.provider";
 
 const LeftSidebar = () => {
   const pathname = usePathname();
+  const { user } = useUserStore((state) => state);
+
+  const sidebarlinks = [
+    {
+      label: "Home",
+      href: "/dashboard",
+      Icon: Home,
+    },
+    {
+      label: "Messages",
+      href: "/dashboard/messages",
+      Icon: MessageCircle,
+    },
+    {
+      label: "profile",
+      href: `/dashboard/profile/${user?.id}`,
+      Icon: User,
+    },
+  ];
+
   return (
     <section className="bg-air_force_blue-100 border-r border-gray-400  w-[20%] h-full px-3 py-3 md:flex flex-col justify-between hidden">
       <div className="py-4 px  mb-[2rem]">
@@ -41,8 +62,7 @@ const LeftSidebar = () => {
       <div className="flex items-center gap-4">
         <LogOut color="white" />
         <div className="flex flex-col item-start">
-          <h3 className="text-white font-semibold">Abiel Asimiea</h3>
-          <p className="text-gray-300">dbestabi28@gmail.com</p>
+          <p className="text-gray-300">{user?.username}</p>
         </div>
       </div>
     </section>

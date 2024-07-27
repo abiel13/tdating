@@ -4,9 +4,7 @@ import React from "react";
 import { getuserName } from "@/lib/actions/user.actions";
 
 const UserProfile = () => {
-
-
-
+  
   return (
     <div className="min-h-screen w-full  px-6 py-4">
       <div className="flex-col flex gap-4  my-4">
