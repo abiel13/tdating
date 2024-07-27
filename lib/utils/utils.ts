@@ -94,7 +94,7 @@ export const validateAge = (dateOfBirth: Date) => {
   return null;
 };
 
-export const calculateAge = (birthdate: Date): string => {
+export const calculateAge = (birthdate: any): string => {
   const today = new Date();
   const date = new Date(birthdate)
 

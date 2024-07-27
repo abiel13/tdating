@@ -1,9 +1,13 @@
+import NotFound from "@/components/NotFound";
 import React from "react";
 
 const Messages = () => {
   return (
-    <div className="h-full w-full flex flex-col justify-center items-center">
-      <h1 className="text-white font-semibold text-2xl">No Message Request</h1>
+    <div className="h-full w-full flex flex-col items-center">
+      <NotFound
+        title="No Message Request Found"
+        desc="try updating your profile to get more views and message request"
+      />
     </div>
   );
 };

@@ -41,11 +41,12 @@ export async function createUser({
 
 export async function getuserById(id: string) {
   try {
+    await connectToDB();
     const user = await User.findById(id);
     if (!user) {
       return { message: "User not found" };
     }
-    return { data: user };
+    return JSON.parse(JSON.stringify(user));
   } catch (error: any) {
     message: error.message;
   }
