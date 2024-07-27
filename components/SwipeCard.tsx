@@ -6,19 +6,19 @@ import React, { useEffect, useRef, useState } from "react";
 import SwipeCardAction from "./SwipeCardAction";
 
 interface SwipeCardI {
-  name: string;
-  Age: string;
-  desc: string;
-  images: string[];
+  fullName: string;
+  Age: () => string;
+  bio: string;
+  profilePictures: string[];
   isOpaque: boolean;
   incrementIdx: any;
 }
 
 const SwipeCard = ({
-  images,
-  name,
+  profilePictures,
+  fullName,
   Age,
-  desc,
+  bio,
   isOpaque,
   incrementIdx,
 }: SwipeCardI) => {
@@ -28,11 +28,11 @@ const SwipeCard = ({
       id="test-card"
       className={` ${
         isOpaque ? "opacity-100 scale-100" : "opacity-0 scale-0"
-      } bg-gray-600 absolute md:w-[370px] transition-all ease-in-out duration-300 w-full md:h-[570px] h-[80%] rounded-t-xl `}
+      } bg-gray-600 absolute md:w-[370px] transition-all ease-in-out duration-300 w-full md:h-[570px] h-[90vh]  rounded-t-xl `}
     >
       <div className="relative w-full h-[100%] md:h-[100%]">
         <Image
-          src={images[currentImage]}
+          src={profilePictures[currentImage]}
           alt="image"
           className="object-cover rounded-t-xl pointer-events-none"
           fill
@@ -40,9 +40,9 @@ const SwipeCard = ({
       </div>{" "}
       <div className="absolute -bottom-3 w-full z-10 bg-black/80  px-3">
         <h1 className="text-white font-semibold text-3xl">
-          {name} <span className="font-medium">{Age}</span>
+          {fullName} <span className="font-medium">{Age()}</span>
         </h1>
-        <p className="text-gray-400 capitalize text-lg">{desc}</p>
+        <p className="text-gray-400 capitalize text-lg">{bio}</p>
 
         <div className="flex flex-row gap-4 justify-around">
           <SwipeCardAction
@@ -73,7 +73,7 @@ const SwipeCard = ({
         </div>
       </div>
       <div className="w-full h-[10px] absolute top-2 flex px-2 gap-1">
-        {images.map((item, i) => {
+        {profilePictures.map((item, i) => {
           const active = currentImage === i;
           return (
             <div

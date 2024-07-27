@@ -97,7 +97,7 @@ export async function getUserByLocation(
         },
       },
     });
-    return { data: users };
+    return JSON.parse(JSON.stringify(users));
   } catch (error) {
     throw error;
   }

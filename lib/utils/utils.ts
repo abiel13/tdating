@@ -12,16 +12,15 @@ export function isBase64Image(imageData: string) {
   return base64Regex.test(imageData);
 }
 
-export function imageToBase64(file:File, callback:Function) {
+export function imageToBase64(file: File, callback: Function) {
   const reader = new FileReader();
 
-  reader.onloadend = function() {
-      callback(reader.result);
+  reader.onloadend = function () {
+    callback(reader.result);
   };
 
   reader.readAsDataURL(file);
 }
-
 
 interface gLT {
   longitude: number;
@@ -71,7 +70,7 @@ export async function getLocation(): Promise<any> {
   });
 }
 
-export const validateAge = (dateOfBirth:Date) => {
+export const validateAge = (dateOfBirth: Date) => {
   if (!dateOfBirth) {
     return "Date of birth is required.";
   }
@@ -81,7 +80,10 @@ export const validateAge = (dateOfBirth:Date) => {
   let age = today.getFullYear() - birthDate.getFullYear();
   const monthDiff = today.getMonth() - birthDate.getMonth();
 
-  if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+  if (
+    monthDiff < 0 ||
+    (monthDiff === 0 && today.getDate() < birthDate.getDate())
+  ) {
     age--;
   }
 
@@ -90,4 +92,18 @@ export const validateAge = (dateOfBirth:Date) => {
   }
 
   return null;
+};
+
+export const calculateAge = (birthdate: Date): string => {
+  const today = new Date();
+  const date = new Date(birthdate)
+
+  let age = today.getFullYear() - date?.getFullYear();
+  const monthDiff = today.getMonth() - date.getMonth();
+
+  if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < date.getDate())) {
+    age--;
+  }
+
+  return age.toLocaleString();
 };
