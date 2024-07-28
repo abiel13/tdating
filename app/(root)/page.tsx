@@ -7,13 +7,14 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 export default function Home() {
-  const isloggedIn = cookies().get("flirtgram-user");
+  const isloggedIn:any = cookies().get("flirtgram-user");
 
   if (isloggedIn) {
     console.log(isloggedIn.value);
     redirect("/dashboard");
   } else {
     console.log(isloggedIn || "");
+    alert("not logged in");
   }
 
   return (
@@ -22,7 +23,7 @@ export default function Home() {
         <HeaderComp />
         <HeroComp />
       </div>
-
+      <div>{JSON.stringify(isloggedIn?.value)}</div>
       <div className="py-[2rem] px-3  md:px-[3rem] mt-[10vh] flex flex-col gap-8 ">
         <h1 className="text-4xl font-sans font-semibold">
           <span className="text-red-500">Dating</span>, Make Friends <br />&

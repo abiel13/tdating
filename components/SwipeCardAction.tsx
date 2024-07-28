@@ -19,7 +19,7 @@ const SwipeCardAction = ({
     <div className="flex flex-col items-center ">
       <div
         onClick={onclick}
-        className="shadow-lg h-14 w-14 scale-100 rounded-full bg-black/40 hover:scale-[120%]  transition-all ease-in flex items-center justify-center"
+        className={`border-[1px] w-[80px] h-[80px] flex items-center justify-center rounded-full`}
       >
         <Icon fill={fill} color={color} size={32} />
       </div>{" "}

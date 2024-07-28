@@ -1,12 +1,32 @@
 "use client";
 
-import { sidebarlinks } from "@/constants/sidebarlinks";
+import { Home, MessageCircle, SearchCheck, Star, User } from "lucide-react";
+import { useUserStore } from "@/providers/user.provider";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
 
 const Bottombar = () => {
   const pathname = usePathname();
+  const { user } = useUserStore((state) => state);
+
+  const sidebarlinks = [
+    {
+      label: "Home",
+      href: "/dashboard",
+      Icon: Home,
+    },
+    {
+      label: "Messages",
+      href: "/dashboard/messages",
+      Icon: MessageCircle,
+    },
+    {
+      label: "profile",
+      href: `/dashboard/profile/${user?.id}`,
+      Icon: User,
+    },
+  ];
   return (
     <section className="bg-[#0b0c0b] h-[10%] fixed z-50 bottom-0 flex md:hidden w-full items-centerbg-[#0b0c0b] justify-around  items-center">
       {sidebarlinks.map((item, i) => {

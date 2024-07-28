@@ -11,7 +11,7 @@ const ProfileHeader = ({ userData }: { userData: User | null }) => {
           src={userData?.profilePictures[0] || ""}
           alt="user_profile image"
           fill
-          className="rounded-full"
+          className="rounded-full object-cover object-top"
         />
       </div>
 

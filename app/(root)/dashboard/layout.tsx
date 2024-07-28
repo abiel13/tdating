@@ -8,7 +8,7 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <main className={`bg-air_force_blue-200 h-screen flex md:flex-row flex-col`}>
+    <main className={`bg-air_force_blue-200  flex md:flex-row flex-col`}>
       <LeftSidebar />
       <section className="w-full h-full">
         <Topbar />
