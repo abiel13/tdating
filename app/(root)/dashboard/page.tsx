@@ -34,7 +34,7 @@ const Dashboard = () => {
       ) : (
         <>
           {hasMore ? (
-            <div className="w-full min-h-screen  my-[10%] flex justify-center md:items-center py-3 md:h-full ">
+            <div className="w-full min-h-screen  my-[10%] md:my-0 flex justify-center md:items- py-3 md:h-full ">
               {dat?.map((item, i) => {
                 const active = currentDate == i;
                 return (
