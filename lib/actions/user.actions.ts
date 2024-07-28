@@ -32,7 +32,11 @@ export async function createUser({
     await newUser.save();
 
     return JSON.parse(
-      JSON.stringify({ id: newUser._id, location: newUser.location })
+      JSON.stringify({
+        id: newUser._id,
+        location: newUser.location,
+        username: newUser.username,
+      })
     );
   } catch (error) {
     throw error;

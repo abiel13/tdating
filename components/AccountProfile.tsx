@@ -101,7 +101,7 @@ const AccountProfile = ({ btnTitle, userInfo }: AccountProfileProps) => {
         telegramChatId: userInfo.id,
       });
 
-      document.cookie = `firltgram-user=${JSON.stringify({
+      document.cookie = `flirtgram-user=${JSON.stringify({
         id: newUser._id,
         username: newUser.username,
         location: newUser.location,

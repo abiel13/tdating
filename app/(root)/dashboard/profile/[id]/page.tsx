@@ -28,7 +28,7 @@ const UserProfile = () => {
       fullName: "KTovew we",
       bio: " A 25-year-old financial analyst from Chicago. He's passionate about cooking gourmet meals and traveling to new countries to experience different cuisines.",
       dateOfBirth: new Date("2001-01-03T23:00:00.000Z"),
-      username: "vtonede",
+      username: "de334sas",
       gender: "Male",
       profilePictures: [
         "https://i.pinimg.com/236x/90/05/7c/90057c033320cf6064a60888c591be08.jpg",
@@ -37,7 +37,7 @@ const UserProfile = () => {
         "https://i.pinimg.com/236x/8e/eb/33/8eeb33e64bd0139d9cd97a0a7148b9e9.jpg",
       ],
       interests: ["Dancing", "Singing", "Photography"],
-      telegramChatId: "6578909876",
+      telegramChatId: "6578909865",
       location: {
         type: "Point",
         coordinates: [4.8365521, 6.9609754],
@@ -86,7 +86,6 @@ const UserProfile = () => {
           <ProfileHeader userData={userData} />
           <Separator className="mt-8 bg-gray-400" />
           <ProfilePhotoDisplay userData={userData} />
-          <button onClick={() => createDemoUsers()}>create new user</button>
         </div>
       )}
     </>
