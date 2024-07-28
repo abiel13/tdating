@@ -53,27 +53,27 @@ const SwipeCard = ({
         </h1>
         <p className="text-gray-400 capitalize text-lg">{bio}</p>
 
-        <div className="flex flex-row gap-4 justify-around mt-8 ">
+        <div className="flex flex-row  justify-center gap-2 mt-8">
           <SwipeCardAction
             onclick={() => incrementIdx()}
             desc="Pass"
             Icon={X}
-            fill="white"
-            color="white"
+            fill="border-[#ffaaed]"
+            color="#ffaaed"
           />
           <SwipeCardAction
             desc="Smash"
             Icon={Heart}
-            fill="pink"
-            color="white"
+            fill="border-[#9a9aff]"
+            color="#9a9aff"
           />
    
           <SwipeCardAction
             onclick={() => router.push(`dashboard/profile/${id}`)}
             desc="Profile"
             Icon={User2}
-            fill="white"
-            color="white"
+            fill="border-[#afffaf]"
+            color="#afffaf"
           />
         </div>
       </div>

@@ -19,13 +19,11 @@ const SwipeCardAction = ({
     <div className="flex flex-col items-center ">
       <div
         onClick={onclick}
-        className={`border-[1px] w-[80px] h-[80px] flex items-center justify-center rounded-full`}
+        className={`border-[3px] ${fill} w-[80px] h-[80px] flex items-center justify-center rounded-full`}
       >
-        <Icon fill={fill} color={color} size={32} />
+        <Icon fill={color} color={color} size={48} />
       </div>{" "}
-      <div>
-        <h2 className="text-white font-bold font-smash">{desc}</h2>
-      </div>
+      <div></div>
     </div>
   );
 };
