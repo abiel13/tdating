@@ -7,12 +7,12 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 export default function Home() {
-  const isloggedIn:any = cookies().get("flirtgram-user");
+  const isloggedIn = cookies().get("flirtgram-user");
 
   if (isloggedIn) {
     redirect("/dashboard");
   } else {
-    alert("not logged in");
+  console.log('cookie not availiable')
   }
 
   return (
