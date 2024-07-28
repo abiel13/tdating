@@ -86,6 +86,8 @@ const UserProfile = () => {
           <ProfileHeader userData={userData} />
           <Separator className="mt-8 bg-gray-400" />
           <ProfilePhotoDisplay userData={userData} />
+
+          {isMe && <div>user prefrences</div>}
         </div>
       )}
     </>

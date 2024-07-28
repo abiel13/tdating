@@ -10,10 +10,8 @@ export default function Home() {
   const isloggedIn:any = cookies().get("flirtgram-user");
 
   if (isloggedIn) {
-    console.log(isloggedIn.value);
     redirect("/dashboard");
   } else {
-    console.log(isloggedIn || "");
     alert("not logged in");
   }
 

@@ -67,12 +67,7 @@ const SwipeCard = ({
             fill="pink"
             color="white"
           />
-          <SwipeCardAction
-            desc="Double Smash"
-            Icon={HeartPulse}
-            fill="#23f"
-            color="#01f"
-          />
+   
           <SwipeCardAction
             onclick={() => router.push(`dashboard/profile/${id}`)}
             desc="Profile"
