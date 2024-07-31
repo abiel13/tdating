@@ -25,6 +25,7 @@ import SelectImages from "./SelectImages";
 import { createUser } from "@/lib/actions/user.actions";
 import DatePicker from "./DatePicker";
 import GenderSelectComponent from "./GenderSelect";
+import { useUserStore } from "@/providers/user.provider";
 
 interface AccountProfileProps {
   btnTitle: string;
@@ -39,6 +40,7 @@ const AccountProfile = ({ btnTitle, userInfo }: AccountProfileProps) => {
   const router = useRouter();
   const [selectedGender, setSelectedGender] = useState("");
   const [hobby, setHobby] = useState<string[]>([]);
+  const { setUser } = useUserStore((state) => state);
   const [images, setImages] = useState<string[]>([]);
   const [location, setLocation] = useState<string | null>("");
   const [additionalError, setAdditionalError] = useState({
@@ -106,6 +108,11 @@ const AccountProfile = ({ btnTitle, userInfo }: AccountProfileProps) => {
         username: newUser.username,
         location: newUser.location,
       })}`;
+      setUser({
+        id: newUser.id,
+        username: newUser.username,
+        location: newUser.location,
+      });
       router.push("/dashboard");
     } catch (error) {
       console.log(error);

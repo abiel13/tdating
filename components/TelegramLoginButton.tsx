@@ -2,10 +2,11 @@
 import { useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { getuserName } from "@/lib/actions/user.actions";
+import { useUserStore } from "@/providers/user.provider";
 
 const TelegramLoginButton = () => {
   const router = useRouter();
-
+  const { setUser } = useUserStore((state) => state);
   const onTelegramAuth = useCallback(
     async (user: any) => {
       console.log(user);
@@ -22,6 +23,7 @@ const TelegramLoginButton = () => {
             location: userExist[0].location,
           };
           document.cookie = `flirtgram-user=${JSON.stringify(data)}`;
+          setUser(data);
           router.push("/dashboard");
         } else {
           router.push(
