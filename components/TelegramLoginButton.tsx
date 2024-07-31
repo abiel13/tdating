@@ -14,7 +14,7 @@ const TelegramLoginButton = () => {
         const { first_name, last_name, username, id, photo_url } = user;
 
         const userExist: any = await getuserName(username);
-        if (userExist) {
+        if (userExist.length) {
           console.log(userExist);
           const data = {
             id: userExist[0]._id,
