@@ -102,7 +102,7 @@ const AccountProfile = ({ btnTitle, userInfo }: AccountProfileProps) => {
       });
 
       document.cookie = `flirtgram-user=${JSON.stringify({
-        id: newUser._id,
+        id: newUser.id,
         username: newUser.username,
         location: newUser.location,
       })}`;
