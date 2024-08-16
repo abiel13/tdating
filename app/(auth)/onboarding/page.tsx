@@ -1,4 +1,5 @@
 import AccountProfile from "@/components/AccountProfile";
+import Logo from "@/components/Logo";
 import React from "react";
 
 const OnboardingPage = async ({
@@ -13,15 +14,12 @@ const OnboardingPage = async ({
   };
 
   return (
-    <section className="mx-auto flex w-full md:max-w-3xl flex-col px-2 md:px-10 md:py-20 bg-black">
-      <h1 className="font-bold text-white text-3xl font-sans capitalize text-center">
-        Onboarding
-      </h1>
-      <p className="mt-3 text-base-regular text-gray-100 text-center">
-        Complete your profile to use Tdating
-      </p>
-
-      <section className="mt-9 bg-dark-2 px-3 md:p-10 ">
+    <section className="w-full h-screen overflow-y-hidden bg-[#011014] flex items-center justify-center flex-col gap-5">
+      <h1 className="text-white font-bold font-sans text-2xl">
+        Welcome to{"  "}
+        <Logo />{" "}
+      </h1>{" "}
+      <section className="">
         <AccountProfile userInfo={userInfo} btnTitle="Submit" />
       </section>
     </section>

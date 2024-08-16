@@ -35,11 +35,11 @@ const SelectImages = ({
         </p>
       </div>
 
-      <div className=" px-3 py-4  border-dashed border-2  rounded-xl min-h-[230px] grid grid-cols-2 gap-x-4 md:grid-cols-3">
-        {Array.from({ length: 6 }).map((item, i) => (
+      <div className=" px-3 py-4  border-dashed border-2  rounded-xl  grid grid-cols-2 gap-x-4 md:grid-cols-3        ">
+        {Array.from({ length: 4 }).map((item, i) => (
           <label
             key={i}
-            className=" rounded-lg w-full mx-2 my-2 h-[300px] border-red-400 border border-dashed "
+            className=" rounded-lg w-full mx-2 my-2 h-[100px] border-red-400 border border-dashed "
           >
             {images[i] ? (
               <div className="relative w-full h-full">
