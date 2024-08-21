@@ -20,7 +20,7 @@ const OnboardingPage = async ({
         <Logo />{" "}
       </h1>{" "}
       <section className="">
-        <AccountProfile userInfo={userInfo} btnTitle="Submit" />
+        <AccountProfile userInfo={userInfo}  />
       </section>
     </section>
   );
