@@ -12,7 +12,7 @@ const RadioButton: React.FC<RadioButtonProps> = ({
   onChange,
 }) => {
   return (
-    <label className="flex items-center cursor-pointer">
+    <label className="flex items-center cursor-pointer flex-1 flex-shrink-0">
       <input
         type="radio"
         name="gender"

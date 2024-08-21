@@ -224,7 +224,7 @@ const StageTwo: React.FC<StageTwoProps> = ({ setStage, userInfo }) => {
         <h1 className="font-sans text-lg font-bold text-gray-700">
           Select Gender
         </h1>
-        <div className="flex items-center gap-6">
+        <div className="flex items-center gap-6 flex-wrap ">
           <RadioButton
             label="Male"
             value="Male"

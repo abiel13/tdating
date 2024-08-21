@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useCallback } from "react";
+import { useEffect, useCallback, useState } from "react";
 import { useRouter } from "next/navigation";
 import { getuserName } from "@/lib/actions/user.actions";
 import { useUserStore } from "@/providers/user.provider";
@@ -7,11 +7,14 @@ import { useUserStore } from "@/providers/user.provider";
 const TelegramLoginButton = () => {
   const router = useRouter();
   const { setUser } = useUserStore((state) => state);
+  const [loading, setLoading] = useState(false);
+
   const onTelegramAuth = useCallback(
     async (user: any) => {
       console.log(user);
 
       try {
+        setLoading(true);
         const { first_name, last_name, username, id, photo_url } = user;
 
         const userExist: any = await getuserName(username);
@@ -31,6 +34,8 @@ const TelegramLoginButton = () => {
         }
       } catch (error) {
         console.log(error);
+      } finally {
+        setLoading(false);
       }
     },
     [router]
@@ -60,7 +65,15 @@ const TelegramLoginButton = () => {
     };
   }, [onTelegramAuth]);
 
-  return <div id="telegram-login-container" />;
+  return (
+    <div>
+      <div id="telegram-login-container" />;
+
+      {loading && <div className="fixed inset-0 bg-black/70 flex items-center justify-center">
+        <h1 className="text-white font-sans text-3xl ">Loading... Please Wait </h1>
+        </div>}
+    </div>
+  );
 };
 
 export default TelegramLoginButton;
