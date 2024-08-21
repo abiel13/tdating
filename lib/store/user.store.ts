@@ -6,9 +6,11 @@ export interface User {
   username: string;
   fullName: string;
   dateOfBirth: string;
+  onBoarded: boolean;
   gender: string;
   interests: string[];
   bio: string;
+  thumbnailUrl: string;
   profilePictures: string[];
   telegramChatId: string;
   messageRequests: any[];
@@ -18,7 +20,6 @@ export interface User {
 }
 
 export interface SavedUser {
-  location: Location;
   id: string;
   username: string;
 }

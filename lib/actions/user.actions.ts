@@ -65,7 +65,7 @@ export async function updateUser(id: string, updates: any) {
     if (!user) {
       throw new Error("User not found");
     }
-    return { data: user };
+    return JSON.parse(JSON.stringify({ data: user }));
   } catch (error) {
     throw error;
   }
@@ -82,7 +82,7 @@ export async function updateUserByName(username: string, updates: any) {
     if (!user) {
       throw new Error("User not found");
     }
-    return { data: user };
+    return JSON.parse(JSON.stringify({ data: user }));
   } catch (error) {
     throw error;
   }

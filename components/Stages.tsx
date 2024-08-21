@@ -13,6 +13,7 @@ import { validateAge } from "@/lib/utils/utils";
 import { userInfo } from "os";
 import { Router } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useUserStore } from "@/providers/user.provider";
 
 // stage one creating user with telegram username and chatId
 const StageOne = ({
@@ -39,8 +40,7 @@ const StageOne = ({
       setErrorMsg("");
       setLoading(true);
       const isUserExist = await getuserName(userInfo.username);
-      if (isUserExist) {
-        console.log("user exist");
+      if (isUserExist.length) {
         setStage(1);
         return;
       }
@@ -50,7 +50,7 @@ const StageOne = ({
         thumbnailUrl: image || "",
         telegramChatId: userInfo.id,
       });
-
+      console.log(newUser);
       setStage(1);
     } catch (error) {
       setErrorMsg("Error Creating User Please Try Again");
@@ -363,6 +363,7 @@ const StageFour: React.FC<StageThreeProps> = ({ setStage, userInfo }) => {
         interests: selectedHobbies,
       });
       console.log(updatedUser);
+      setStage(4);
     } catch (error) {
       console.log(error);
       setErrorMsg("An Error occured adding hobbies please try again ");
@@ -413,6 +414,7 @@ const StageFour: React.FC<StageThreeProps> = ({ setStage, userInfo }) => {
 
 const StageFive: React.FC<StageThreeProps> = ({ setStage, userInfo }) => {
   const [images, setImages] = useState<string[]>([]);
+  const { setUser } = useUserStore((state) => state);
   const [errorMsg, setErrorMsg] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
@@ -435,16 +437,14 @@ const StageFive: React.FC<StageThreeProps> = ({ setStage, userInfo }) => {
         onBoarded: true,
       });
 
-      // document.cookie = `flirtgram-user=${JSON.stringify({
-      //   id: newUser.id,
-      //   username: newUser.username,
-      //   location: newUser.location,
-      // })}`;
-      // setUser({
-      //   id: newUser.id,
-      //   username: newUser.username,
-      //   location: newUser.location,
-      // });
+      document.cookie = `flirtgram-user=${JSON.stringify({
+        id: updatedUser.data._id,
+        username: updatedUser.data.username,
+      })}`;
+      setUser({
+        id: updatedUser.data._id,
+        username: updatedUser.data.username,
+      });
 
       router.push("/dashboard");
     } catch (error) {

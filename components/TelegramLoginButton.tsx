@@ -15,12 +15,11 @@ const TelegramLoginButton = () => {
         const { first_name, last_name, username, id, photo_url } = user;
 
         const userExist: any = await getuserName(username);
-        if (userExist.length) {
+        if (userExist.length && userExist[0].onBoarded == true) {
           console.log(userExist);
           const data = {
             id: userExist[0]._id,
             username: userExist[0].username,
-            location: userExist[0].location,
           };
           document.cookie = `flirtgram-user=${JSON.stringify(data)}`;
           setUser(data);
