@@ -6,12 +6,7 @@ import { connectToDB } from "../db/connect.";
 export async function createUser({
   username,
   fullName,
-  dateOfBirth,
-  gender,
-  interests,
-  bio,
-  profilePictures,
-  location,
+  thumbnailUrl,
   telegramChatId,
 }: CreateUserParams): Promise<any> {
   // Create a new user instance
@@ -20,22 +15,14 @@ export async function createUser({
     const newUser = new User({
       username,
       fullName,
-      dateOfBirth,
-      gender,
-      interests,
-      bio,
-      profilePictures,
-      location,
+      thumbnailUrl,
       telegramChatId,
     });
 
     await newUser.save();
-
     return JSON.parse(
       JSON.stringify({
         id: newUser._id,
-        location: newUser.location,
-        username: newUser.username,
       })
     );
   } catch (error) {
@@ -75,6 +62,23 @@ export async function updateUser(id: string, updates: any) {
       updates.password = await bcrypt.hash(updates.password, 10);
     }
     const user = await User.findByIdAndUpdate(id, updates, { new: true });
+    if (!user) {
+      throw new Error("User not found");
+    }
+    return { data: user };
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function updateUserByName(username: string, updates: any) {
+  try {
+    if (updates.password) {
+      updates.password = await bcrypt.hash(updates.password, 10);
+    }
+    const user = await User.findOneAndUpdate({ username }, updates, {
+      new: true,
+    });
     if (!user) {
       throw new Error("User not found");
     }

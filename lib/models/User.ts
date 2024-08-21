@@ -14,11 +14,9 @@ const userSchema = new mongoose.Schema({
   },
   dateOfBirth: {
     type: Date,
-    required: true,
   },
   gender: {
     type: String,
-    required: true,
     enum: ["Male", "Female", "Non-binary", "Other"],
   },
   interests: {
@@ -28,6 +26,9 @@ const userSchema = new mongoose.Schema({
     type: String,
     maxlength: 500,
   },
+  thumbnailUrl: {
+    type: String,
+  },
   profilePictures: {
     type: [String], // URLs to profile pictures
   },
@@ -35,12 +36,15 @@ const userSchema = new mongoose.Schema({
     type: {
       type: String,
       enum: ["Point"],
-      required: true,
     },
     coordinates: {
       type: [Number],
       required: true,
     },
+  },
+  onBoarded: {
+    type: Boolean,
+    default: false,
   },
   telegramChatId: {
     type: String,

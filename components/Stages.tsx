@@ -4,16 +4,61 @@ import React, { useState } from "react";
 import RadioButton from "./RadioButton";
 import { hobbies } from "@/constants/hobbies";
 import SelectImages from "./SelectImages";
+import {
+  createUser,
+  getuserName,
+  updateUserByName,
+} from "@/lib/actions/user.actions";
+import { validateAge } from "@/lib/utils/utils";
+import { userInfo } from "os";
+import { Router } from "lucide-react";
+import { useRouter } from "next/navigation";
 
+// stage one creating user with telegram username and chatId
 const StageOne = ({
   userInfo,
   setStage,
 }: {
-  userInfo: { first_name: string; username: string; photo_url?: string };
+  userInfo: {
+    first_name: string;
+    username: string;
+    photo_url?: string;
+    id: string;
+    last_name: string;
+  };
 
   setStage: (stage: number) => void;
 }) => {
   const [image, setImage] = useState<string | null>(userInfo.photo_url || null);
+  const [loading, setLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
+
+  const handleNextStage = async () => {
+    const fullName = userInfo.first_name + " " + userInfo.last_name || "";
+    try {
+      setErrorMsg("");
+      setLoading(true);
+      const isUserExist = await getuserName(userInfo.username);
+      if (isUserExist) {
+        console.log("user exist");
+        setStage(1);
+        return;
+      }
+      const newUser = await createUser({
+        username: userInfo.username,
+        fullName,
+        thumbnailUrl: image || "",
+        telegramChatId: userInfo.id,
+      });
+
+      setStage(1);
+    } catch (error) {
+      setErrorMsg("Error Creating User Please Try Again");
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -67,8 +112,7 @@ const StageOne = ({
           type="text"
           name="first_name"
           className="text-gray-400 font-sans mt-4 px-3 py-2 rounded-lg w-full bg-transparent border"
-          value={userInfo.first_name}
-          onChange={handleInputChange}
+          value={userInfo.first_name + " " + userInfo.last_name || ""}
         />
       </div>
 
@@ -79,15 +123,19 @@ const StageOne = ({
           name="username"
           className="text-gray-400 font-sans mt-4 px-3 py-2 rounded-lg w-full bg-transparent border"
           value={userInfo.username}
-          onChange={handleInputChange}
         />
       </div>
 
+      {errorMsg && (
+        <p className="font-sans font-medium capitalize mt-2 tex-lg text-red-600">
+          {errorMsg}
+        </p>
+      )}
       <button
-        onClick={() => setStage(1)}
+        onClick={handleNextStage}
         className="mt-6 px-4 py-2 bg-blue-500 text-white rounded-lg"
       >
-        Next
+        {loading ? "Loading..." : "Next"}
       </button>
     </div>
   );
@@ -95,29 +143,64 @@ const StageOne = ({
 
 interface StageTwoProps {
   setStage: (stage: number) => void;
+  userInfo: {
+    first_name: string;
+    username: string;
+    photo_url?: string;
+    id: string;
+    last_name: string;
+  };
 }
 interface StageThreeProps {
   setStage: (stage: number) => void;
+  userInfo: {
+    first_name: string;
+    username: string;
+    photo_url?: string;
+    id: string;
+    last_name: string;
+  };
 }
 
-const StageTwo: React.FC<StageTwoProps> = ({ setStage }) => {
+const StageTwo: React.FC<StageTwoProps> = ({ setStage, userInfo }) => {
   const [dateOfBirth, setDateOfBirth] = useState("");
   const [gender, setGender] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
+  const [Loading, setLoading] = useState(false);
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     // Handle form submission, validation, etc.
+    if (!dateOfBirth.length || !gender.length) {
+      setErrorMsg("Please Fill Fields gender and date of birth");
+      return;
+    }
+
+    if (validateAge(dateOfBirth)) {
+      setErrorMsg(validateAge(dateOfBirth) as string);
+      return;
+    }
+
     const formData = {
       dateOfBirth,
       gender,
     };
-    console.log("Form Data:", formData);
 
-    // Proceed to the next stage
-    setStage(2);
+    try {
+      setLoading(true);
+      setErrorMsg("");
+      const updateUser = await updateUserByName(userInfo.username, formData);
+      console.log(updateUser);
+      setStage(2);
+    } catch (error) {
+      console.log(error);
+      setErrorMsg("An Error occured while updating User");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <div className="px-2 py-3">
+    <div className="px-3 md:px-4 py-3 flex flex-col gap-4">
       <div className="w-full flex justify-center">
         <h1 className="text-white font-bold text-xl font-sans">
           Tell Us More About You
@@ -144,42 +227,54 @@ const StageTwo: React.FC<StageTwoProps> = ({ setStage }) => {
         <div className="flex items-center gap-6">
           <RadioButton
             label="Male"
-            value="male"
+            value="Male"
             selectedValue={gender}
             onChange={setGender}
           />
           <RadioButton
             label="Female"
-            value="female"
+            value="Female"
+            selectedValue={gender}
+            onChange={setGender}
+          />{" "}
+          <RadioButton
+            label="Non Binary"
+            value="Non-binary"
             selectedValue={gender}
             onChange={setGender}
           />
           <RadioButton
             label="Other"
-            value="other"
+            value="Other"
             selectedValue={gender}
             onChange={setGender}
           />
         </div>
       </div>
+      {errorMsg && (
+        <p className="text-red-500 capitalize font-light font-sans">
+          {errorMsg}
+        </p>
+      )}
 
-      <div className="mt-4 flex justify-center w-full">
+      <div className="mt-4 flex justify-center w-full ">
         <button
           onClick={handleSubmit}
           className="px-4 py-2 w-full bg-blue-600 text-white rounded-lg shadow-sm hover:bg-blue-700 focus:outline-none"
         >
-          Next
+          {Loading ? "Loading..." : "Next"}
         </button>
       </div>
     </div>
   );
 };
 
-const StageThree: React.FC<StageThreeProps> = ({ setStage }) => {
+const StageThree: React.FC<StageThreeProps> = ({ setStage, userInfo }) => {
   const [bio, setBio] = useState("");
   const [error, setError] = useState("");
+  const [Loading, setLoading] = useState(false);
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (bio.trim() === "") {
       setError("Bio cannot be empty.");
       return;
@@ -187,9 +282,19 @@ const StageThree: React.FC<StageThreeProps> = ({ setStage }) => {
 
     // Handle form submission or API call here
     console.log("Bio:", bio);
+    try {
+      const updateUser = await updateUserByName(userInfo.username, {
+        bio: bio,
+      });
+      console.log(updateUser);
+      setStage(3);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
 
     // Proceed to the next stage
-    setStage(3);
   };
 
   return (
@@ -223,15 +328,17 @@ const StageThree: React.FC<StageThreeProps> = ({ setStage }) => {
           onClick={handleSubmit}
           className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg shadow-sm hover:bg-blue-700 focus:outline-none"
         >
-          Next
+          {Loading ? "Loading..." : "Next"}
         </button>
       </div>
     </div>
   );
 };
 
-const StageFour: React.FC<StageThreeProps> = ({ setStage }) => {
+const StageFour: React.FC<StageThreeProps> = ({ setStage, userInfo }) => {
   const [selectedHobbies, setSelectedHobbies] = useState<string[]>([]);
+  const [errorMsg, setErrorMsg] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const toggleHobby = (hobby: string) => {
     setSelectedHobbies((prevSelectedHobbies) =>
@@ -241,10 +348,27 @@ const StageFour: React.FC<StageThreeProps> = ({ setStage }) => {
     );
   };
 
-  const handleNext = () => {
+  const handleNext = async () => {
     // Handle form submission or move to the next stage
     console.log("Selected Hobbies:", selectedHobbies);
-    setStage(4);
+
+    if (selectedHobbies.length < 5) {
+      setErrorMsg("Select Up to Five Hobbies To Move On");
+      return;
+    }
+    try {
+      setErrorMsg("");
+      setLoading(true);
+      const updatedUser = await updateUserByName(userInfo.username, {
+        interests: selectedHobbies,
+      });
+      console.log(updatedUser);
+    } catch (error) {
+      console.log(error);
+      setErrorMsg("An Error occured adding hobbies please try again ");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -269,22 +393,66 @@ const StageFour: React.FC<StageThreeProps> = ({ setStage }) => {
           );
         })}
       </div>
+
+      {errorMsg && (
+        <p className="font-sans font-medium capitalize mt-2 tex-lg text-red-600">
+          {errorMsg}
+        </p>
+      )}
       <div className="mt-8 flex justify-center">
         <button
           onClick={handleNext}
           className="px-6 py-2 bg-blue-600 text-white w-full rounded-lg shadow-sm hover:bg-blue-700 focus:outline-none"
         >
-          Next
+          {loading ? "Loading...." : "Next"}
         </button>
       </div>
     </div>
   );
 };
 
-const StageFive: React.FC<StageThreeProps> = ({ setStage }) => {
+const StageFive: React.FC<StageThreeProps> = ({ setStage, userInfo }) => {
   const [images, setImages] = useState<string[]>([]);
-  const handleNext = () => {
-    // Handle form submission or move to the next stage
+  const [errorMsg, setErrorMsg] = useState("");
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
+
+  const handleNext = async () => {
+    // validation
+    if (images.length < 2) {
+      setErrorMsg("please add two or more pictures to proceed");
+      return;
+    }
+
+    // Handle form submission or move to the set onboarded to true;
+
+    try {
+      setErrorMsg("");
+      setLoading(true);
+
+      const updatedUser = await updateUserByName(userInfo.username, {
+        profilePictures: images,
+        onBoarded: true,
+      });
+
+      // document.cookie = `flirtgram-user=${JSON.stringify({
+      //   id: newUser.id,
+      //   username: newUser.username,
+      //   location: newUser.location,
+      // })}`;
+      // setUser({
+      //   id: newUser.id,
+      //   username: newUser.username,
+      //   location: newUser.location,
+      // });
+
+      router.push("/dashboard");
+    } catch (error) {
+      console.error(error);
+      setErrorMsg("An error occured updating personal images please try again");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -295,18 +463,24 @@ const StageFive: React.FC<StageThreeProps> = ({ setStage }) => {
 
       <SelectImages images={images} setImages={setImages} error="" />
 
+      {errorMsg && (
+        <p className="font-sans font-medium capitalize mt-2 tex-lg text-red-600">
+          {errorMsg}
+        </p>
+      )}
       <div className="mt-2 flex justify-center w-full">
         <button
           onClick={handleNext}
           className="px-6 py-2 bg-blue-600 text-white w-full rounded-lg shadow-sm hover:bg-blue-700 focus:outline-none"
         >
-          Next
+          {loading ? "Loading...." : "Next"}
         </button>
       </div>
     </div>
   );
 };
 
+// collection of onboarding stages displayed according to how far the user has progressed
 const Stages = ({
   stage,
   userInfo,
@@ -318,7 +492,7 @@ const Stages = ({
 }) => {
   const StageArr = [StageOne, StageTwo, StageThree, StageFour, StageFive];
   return (
-    <div>
+    <div className="">
       {StageArr.map((Item, i) =>
         i === stage ? (
           <Item setStage={setStage} userInfo={userInfo} key={i} />

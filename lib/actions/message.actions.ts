@@ -65,10 +65,7 @@ export const updateMessageReqStatus = async (id: string) => {
 
 export const deleteMessageRequest = async (id:string) => {
     try {
-        const messageRequest = await MessageRequests.findByIdAndDelete(id);
-
-      
-      
+        const messageRequest = await MessageRequests.findByIdAndDelete(id);     
     } catch (error) {
         
     }

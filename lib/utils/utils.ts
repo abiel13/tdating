@@ -70,13 +70,14 @@ export async function getLocation(): Promise<any> {
   });
 }
 
-export const validateAge = (dateOfBirth: Date) => {
+export const validateAge = (dateOfBirth: unknown) => {
   if (!dateOfBirth) {
+    console.log("date of birth is required");
     return "Date of birth is required.";
   }
 
   const today = new Date();
-  const birthDate = new Date(dateOfBirth);
+  const birthDate = new Date(dateOfBirth as Date);
   let age = today.getFullYear() - birthDate.getFullYear();
   const monthDiff = today.getMonth() - birthDate.getMonth();
 
@@ -88,15 +89,16 @@ export const validateAge = (dateOfBirth: Date) => {
   }
 
   if (age < 18) {
+    console.log("use must be at least 18 years old");
     return "You must be at least 18 years old.";
   }
 
-  return null;
+  return false;
 };
 
 export const calculateAge = (birthdate: any): string => {
   const today = new Date();
-  const date = new Date(birthdate)
+  const date = new Date(birthdate);
 
   let age = today.getFullYear() - date?.getFullYear();
   const monthDiff = today.getMonth() - date.getMonth();
