@@ -1,9 +1,9 @@
-const mongoose = require('mongoose');
+import mongoose from "mongoose";
 
 const userPreferencesSchema = new mongoose.Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
+    ref: 'Users',
     required: true,
     unique: true,
   },
@@ -46,4 +46,4 @@ userPreferencesSchema.index({ location: '2dsphere' });
 
 const UserPreferences = mongoose.models.UserPreferences || mongoose.model('UserPreferences', userPreferencesSchema);
 
-export default UserPreferences
+export default UserPreferences;

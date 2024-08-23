@@ -14,6 +14,7 @@ import { userInfo } from "os";
 import { Router } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useUserStore } from "@/providers/user.provider";
+import { createPreference } from "@/lib/actions/userprefrences.actions";
 
 // stage one creating user with telegram username and chatId
 const StageOne = ({
@@ -39,6 +40,7 @@ const StageOne = ({
     try {
       setErrorMsg("");
       setLoading(true);
+      console.log('im here')
       const isUserExist = await getuserName(userInfo.username);
       if (isUserExist.length) {
         setStage(1);
@@ -51,6 +53,10 @@ const StageOne = ({
         telegramChatId: userInfo.id,
       });
       console.log(newUser);
+
+      const newUserPreference = await createPreference(newUser._id);
+      console.log(newUserPreference);
+
       setStage(1);
     } catch (error) {
       setErrorMsg("Error Creating User Please Try Again");
