@@ -1,8 +1,9 @@
 "use client";
 import NotFound from "@/components/NotFound";
 import SwipeCard from "@/components/SwipeCard";
-import { getUserByLocation } from "@/lib/actions/user.actions";
-import { calculateAge } from "@/lib/utils/utils";
+import { updateUser } from "@/lib/actions/user.actions";
+import { calculateAge, getLocation } from "@/lib/utils/utils";
+import { useUserStore } from "@/providers/user.provider";
 import React, { useEffect, useState } from "react";
 import { Circles } from "react-loader-spinner";
 
@@ -11,13 +12,24 @@ const Dashboard = () => {
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
   const [dat, setDat] = useState<any[]>([]);
+  const { user } = useUserStore((state) => state);
 
   useEffect(() => {
     (async function () {
       try {
         setLoading(true);
-        // const response = await getUserByLocation("4.8472226", "6.974604");
-        // setDat(response);
+        //  get user location and save it to db
+
+        const { latitude, longitude } = await getLocation();
+
+        const update = await updateUser(user!.id, {
+          location: {
+            type: "Point",
+            coordinates: [latitude, longitude],
+          },
+        });
+
+        console.log(update);
       } catch (error) {
         console.log(error);
       } finally {
