@@ -16,8 +16,8 @@ const Dashboard = () => {
     (async function () {
       try {
         setLoading(true);
-        const response = await getUserByLocation("4.8472226", "6.974604");
-        setDat(response);
+        // const response = await getUserByLocation("4.8472226", "6.974604");
+        // setDat(response);
       } catch (error) {
         console.log(error);
       } finally {

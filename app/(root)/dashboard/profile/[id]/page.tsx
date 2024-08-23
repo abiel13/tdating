@@ -42,7 +42,7 @@ const UserProfile = () => {
   return (
     <>
       {loading ? (
-        <div className="h-full flex items-center justify-center w-full">
+        <div className=" flex items-center justify-center w-full h-screen">
           <Circles />
         </div>
       ) : (

@@ -31,7 +31,7 @@ const LeftSidebar = () => {
   ];
 
   return (
-    <section className="bg-air_force_blue-100 border-r border-gray-400  w-[20%] h-screen px-3 py-3 md:flex flex-col justify-between sticky top-0 hidden">
+    <section className="bg-[#bbb9be04] border-r border-gray-400  w-[20%] h-screen px-3 py-3 md:flex flex-col justify-between sticky top-0 hidden">
       <div className="py-4 px  mb-[2rem]">
         <h1 className="text-white font-bold text-3xl ">
           <Logo />
