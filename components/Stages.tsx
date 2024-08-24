@@ -10,8 +10,6 @@ import {
   updateUserByName,
 } from "@/lib/actions/user.actions";
 import { validateAge } from "@/lib/utils/utils";
-import { userInfo } from "os";
-import { Router } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useUserStore } from "@/providers/user.provider";
 import { createPreference } from "@/lib/actions/userprefrences.actions";
@@ -40,7 +38,6 @@ const StageOne = ({
     try {
       setErrorMsg("");
       setLoading(true);
-      console.log('im here')
       const isUserExist = await getuserName(userInfo.username);
       if (isUserExist.length) {
         setStage(1);
@@ -54,7 +51,7 @@ const StageOne = ({
       });
       console.log(newUser);
 
-      const newUserPreference = await createPreference(newUser._id);
+      const newUserPreference = await createPreference('66c90a2af205c7c023529830');
       console.log(newUserPreference);
 
       setStage(1);
@@ -77,9 +74,6 @@ const StageOne = ({
     }
   };
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
-  };
 
   return (
     <div className="px-3 py-4 flex flex-col gap-4">
@@ -117,6 +111,7 @@ const StageOne = ({
         <input
           type="text"
           name="first_name"
+          readOnly
           className="text-gray-400 font-sans mt-4 px-3 py-2 rounded-lg w-full bg-transparent border"
           value={userInfo.first_name + " " + userInfo.last_name || ""}
         />
@@ -126,6 +121,7 @@ const StageOne = ({
         <h1 className="font-sans text-white font-bold text-lg">User Name</h1>
         <input
           type="text"
+          readOnly
           name="username"
           className="text-gray-400 font-sans mt-4 px-3 py-2 rounded-lg w-full bg-transparent border"
           value={userInfo.username}

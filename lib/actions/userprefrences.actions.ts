@@ -1,6 +1,7 @@
+"use server";
+import { connectToDB } from "../db/connect.";
 import User from "../models/User";
 import UserPreferences from "../models/userPreference";
-
 
 interface IUserPreferences {
   userId: string;
@@ -35,6 +36,7 @@ interface IUser {
  */
 export async function fetchPossibleDates(userId: string): Promise<any[]> {
   try {
+    await connectToDB();
     //Get the user's preferences
     const preferences = await UserPreferences.findOne({ userId }).exec();
     if (!preferences) {
@@ -78,7 +80,7 @@ export async function fetchPossibleDates(userId: string): Promise<any[]> {
       .lean() // Return plain JavaScript objects for performance
       .exec();
 
-    return possibleDates ;
+    return possibleDates;
   } catch (error) {
     console.error("Error fetching possible dates:", error);
     throw error;
@@ -87,10 +89,14 @@ export async function fetchPossibleDates(userId: string): Promise<any[]> {
 
 export async function createPreference(id: string) {
   try {
-    const userPreference = await UserPreferences.create({
+    await connectToDB();
+    const newPrefrence = new UserPreferences({
       userId: id,
+      location: undefined,
     });
-    console.log(userPreference);
+
+    await newPrefrence.save();
+    return JSON.parse(JSON.stringify(newPrefrence));
   } catch (error) {
     console.error(error);
     throw error;
@@ -100,4 +106,20 @@ export async function createPreference(id: string) {
 export async function getUserPrefrences(userId: string) {
   try {
   } catch (error) {}
+}
+
+export async function updateByUserId(userId: string, update: any) {
+  try {
+    await connectToDB();
+    const updatedPrefrence = await UserPreferences.findOneAndUpdate(
+      {
+        userId,
+      },
+      update,
+      { new: true }
+    );
+    console.log(updatedPrefrence);
+  } catch (error) {
+    throw error;
+  }
 }

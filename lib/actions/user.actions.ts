@@ -113,13 +113,13 @@ export async function getUserByLocation(
   }
 }
 
-export async function getFeed(id: string) {
-  // fetch user using id ;
-  const user = await getuserById(id);
+// export async function getFeed(id: string) {
+//   // fetch user using id ;
+//   const user = await getuserById(id);
 
-  const { location } = user;
+//   const { location } = user;
 
-  // create object for the search
+//   // create object for the search
 
-  // using object  fetch list of suitable matches
-}
+//   // using object  fetch list of suitable matches
+// }

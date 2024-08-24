@@ -2,6 +2,7 @@
 import NotFound from "@/components/NotFound";
 import SwipeCard from "@/components/SwipeCard";
 import { updateUser } from "@/lib/actions/user.actions";
+import { updateByUserId } from "@/lib/actions/userprefrences.actions";
 import { calculateAge, getLocation } from "@/lib/utils/utils";
 import { useUserStore } from "@/providers/user.provider";
 import React, { useEffect, useState } from "react";
@@ -13,23 +14,34 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(false);
   const [dat, setDat] = useState<any[]>([]);
   const { user } = useUserStore((state) => state);
+  const [locationerror, setLocationerror] = useState(false);
 
   useEffect(() => {
     (async function () {
       try {
         setLoading(true);
         //  get user location and save it to db
+        try {
+          const { latitude, longitude } = await getLocation();
 
-        const { latitude, longitude } = await getLocation();
+          const update = await updateUser(user!.id, {
+            location: {
+              type: "Point",
+              coordinates: [latitude, longitude],
+            },
+          });
+          const updatePreferences = await updateByUserId(user!.id, {
+            location: {
+              type: "Point",
+              coordinates: [latitude, longitude],
+            },
+          });
+        } catch (error) {
+          setLocationerror(true);
+        }
+// fetch feed based on current preferences
 
-        const update = await updateUser(user!.id, {
-          location: {
-            type: "Point",
-            coordinates: [latitude, longitude],
-          },
-        });
 
-        console.log(update);
       } catch (error) {
         console.log(error);
       } finally {
