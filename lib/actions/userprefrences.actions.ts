@@ -39,6 +39,7 @@ export async function fetchPossibleDates(userId: string): Promise<any[]> {
     await connectToDB();
     //Get the user's preferences
     const preferences = await UserPreferences.findOne({ userId }).exec();
+    console.log(preferences);
     if (!preferences) {
       throw new Error("User preferences not found.");
     }
