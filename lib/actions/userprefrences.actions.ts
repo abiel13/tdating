@@ -39,7 +39,7 @@ export async function fetchPossibleDates(userId: string): Promise<any[]> {
     await connectToDB();
     //Get the user's preferences
     const preferences = await UserPreferences.findOne({ userId }).exec();
-    console.log(preferences);
+    
     if (!preferences) {
       throw new Error("User preferences not found.");
     }
@@ -75,13 +75,13 @@ export async function fetchPossibleDates(userId: string): Promise<any[]> {
 
     const possibleDates = await User.find(query)
       .select(
-        "username fullName dateOfBirth gender location interests thumbnailUrl "
+        "username fullName dateOfBirth gender location interests thumbnailUrl profilePictures"
       )
       .limit(20) // Limit the number of results
       .lean() // Return plain JavaScript objects for performance
       .exec();
 
-    return possibleDates;
+    return JSON.parse(JSON.stringify(possibleDates));
   } catch (error) {
     console.error("Error fetching possible dates:", error);
     throw error;

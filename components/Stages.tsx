@@ -51,7 +51,7 @@ const StageOne = ({
       });
       console.log(newUser);
 
-      const newUserPreference = await createPreference('66c90a2af205c7c023529830');
+      const newUserPreference = await createPreference(newUser.id);
       console.log(newUserPreference);
 
       setStage(1);
@@ -438,6 +438,7 @@ const StageFive: React.FC<StageThreeProps> = ({ setStage, userInfo }) => {
         profilePictures: images,
         onBoarded: true,
       });
+      
 
       document.cookie = `flirtgram-user=${JSON.stringify({
         id: updatedUser.data._id,

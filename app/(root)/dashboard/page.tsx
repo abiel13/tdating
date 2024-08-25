@@ -32,6 +32,7 @@ const Dashboard = () => {
         //  get user location and save it to db
         if (!saved) {
           try {
+            console.log(user);
             const { latitude, longitude } = await getLocation();
             const update = await updateUser(user!.id, {
               location: {
@@ -45,7 +46,7 @@ const Dashboard = () => {
                 coordinates: [latitude, longitude],
               },
             });
-            console.log(update, updatePreferences);
+            console.log( updatePreferences);
             setSaved(true);
           } catch (error) {
             console.log(error);
@@ -55,6 +56,7 @@ const Dashboard = () => {
         // fetch feed based on current preferences
         const dates = await fetchPossibleDates(user!.id);
         console.log(dates);
+        setDat(dates);
       } catch (error) {
         console.log(error);
       } finally {
@@ -73,7 +75,7 @@ const Dashboard = () => {
           {hasMore ? (
             <div>
               {dat.length > 0 ? (
-                <div className="w-full min-h-screen  my-[10%] md:my-0 flex justify-center md:items- py-3 md:h-full ">
+                <div className="w-full min-h-screen  my-[10%] md:my-0 flex justify-center md:items- py-3 md:min-h-screen ">
                   {dat?.map((item, i) => {
                     const active = currentDate == i;
                     return (

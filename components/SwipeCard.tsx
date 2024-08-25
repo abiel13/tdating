@@ -58,22 +58,22 @@ const SwipeCard = ({
             onclick={() => incrementIdx()}
             desc="Pass"
             Icon={X}
-            fill="border-[#ffaaed]"
-            color="#ffaaed"
+            fill="bg-[#ffaaed]"
+            color="#fff"
           />
           <SwipeCardAction
             desc="Smash"
             Icon={Heart}
-            fill="border-[#9a9aff]"
-            color="#9a9aff"
+            fill="bg-[#9a9aff]"
+            color="#fff"
           />
    
           <SwipeCardAction
             onclick={() => router.push(`dashboard/profile/${id}`)}
             desc="Profile"
             Icon={User2}
-            fill="border-[#afffaf]"
-            color="#afffaf"
+            fill="bg-[#44cc44]"
+            color="#fff"
           />
         </div>
       </div>
