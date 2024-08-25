@@ -25,6 +25,7 @@ const Messages = () => {
     <div className=" min-h-screen md:h-full w-full flex flex-col items-center px-2 py-3">
       {messageReq.length > 0 ? (
         <div className="flex flex-col gap-5 w-full min-h-full">
+          <h3 className="font-bold text-lg font-sans text-white">Message Request's</h3>
           {messageReq.map((item, i) => {
             return (
               <div
@@ -36,7 +37,10 @@ const Messages = () => {
                 </h3>
                 <p className="text-white">{item.message}</p>
 
-                <Link className="bg-blue-500 rounded-lg px-5 py-2 text-white w-fit " href={`/dashboard/profile/${item.fromUserId._id}`}>
+                <Link
+                  className="bg-blue-500 rounded-lg px-5 py-2 text-white w-fit "
+                  href={`/dashboard/profile/${item.fromUserId._id}`}
+                >
                   Visit Profile
                 </Link>
               </div>
