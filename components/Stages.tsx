@@ -49,11 +49,8 @@ const StageOne = ({
         thumbnailUrl: image || "",
         telegramChatId: userInfo.id,
       });
-      console.log(newUser);
 
       const newUserPreference = await createPreference(newUser.id);
-      console.log(newUserPreference);
-
       setStage(1);
     } catch (error) {
       setErrorMsg("Error Creating User Please Try Again");
@@ -191,7 +188,7 @@ const StageTwo: React.FC<StageTwoProps> = ({ setStage, userInfo }) => {
       setLoading(true);
       setErrorMsg("");
       const updateUser = await updateUserByName(userInfo.username, formData);
-      console.log(updateUser);
+  
       setStage(2);
     } catch (error) {
       console.log(error);
@@ -283,12 +280,10 @@ const StageThree: React.FC<StageThreeProps> = ({ setStage, userInfo }) => {
     }
 
     // Handle form submission or API call here
-    console.log("Bio:", bio);
     try {
       const updateUser = await updateUserByName(userInfo.username, {
         bio: bio,
       });
-      console.log(updateUser);
       setStage(3);
     } catch (error) {
       console.log(error);
@@ -352,7 +347,7 @@ const StageFour: React.FC<StageThreeProps> = ({ setStage, userInfo }) => {
 
   const handleNext = async () => {
     // Handle form submission or move to the next stage
-    console.log("Selected Hobbies:", selectedHobbies);
+  
 
     if (selectedHobbies.length < 5) {
       setErrorMsg("Select Up to Five Hobbies To Move On");
@@ -364,7 +359,6 @@ const StageFour: React.FC<StageThreeProps> = ({ setStage, userInfo }) => {
       const updatedUser = await updateUserByName(userInfo.username, {
         interests: selectedHobbies,
       });
-      console.log(updatedUser);
       setStage(4);
     } catch (error) {
       console.log(error);

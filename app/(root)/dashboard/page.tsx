@@ -26,13 +26,11 @@ const Dashboard = () => {
       if (!user) {
         return;
       }
-      console.log(user);
       try {
         setLoading(true);
         //  get user location and save it to db
         if (!saved) {
           try {
-            console.log(user);
             const { latitude, longitude } = await getLocation();
             const update = await updateUser(user!.id, {
               location: {
@@ -46,7 +44,6 @@ const Dashboard = () => {
                 coordinates: [latitude, longitude],
               },
             });
-            console.log( updatePreferences);
             setSaved(true);
           } catch (error) {
             console.log(error);
@@ -55,7 +52,7 @@ const Dashboard = () => {
         }
         // fetch feed based on current preferences
         const dates = await fetchPossibleDates(user!.id);
-        console.log(dates);
+    
         setDat(dates);
       } catch (error) {
         console.log(error);

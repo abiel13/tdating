@@ -119,7 +119,6 @@ export async function updateByUserId(userId: string, update: any) {
       update,
       { new: true }
     );
-    console.log(updatedPrefrence);
   } catch (error) {
     throw error;
   }
