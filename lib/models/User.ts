@@ -1,4 +1,4 @@
-import * as mongoose from "mongoose";
+import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema({
   username: {
@@ -21,6 +21,11 @@ const userSchema = new mongoose.Schema({
   },
   interests: {
     type: [String],
+  },
+  matches: {
+    type: [mongoose.Schema.Types.ObjectId], // Array of ObjectId references to matched users
+    ref: "User",
+    default: [],
   },
   bio: {
     type: String,
@@ -67,6 +72,7 @@ const userSchema = new mongoose.Schema({
 // Creating a 2dsphere index to enable location-based queries
 userSchema.index({ location: "2dsphere" });
 
-const User = mongoose.models.User || mongoose.model("User", userSchema);
+
+const User = mongoose.models?.User || mongoose.model("User", userSchema);
 
 export default User;

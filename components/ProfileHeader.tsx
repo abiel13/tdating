@@ -8,7 +8,7 @@ const ProfileHeader = ({ userData }: { userData: User | null }) => {
     <div className="min-h-[30vh] flex md:items-center gap-10">
       <div className="h-[100px] w-[100px] md:h-[200px] md:w-[200px] relative flex-shrink-0">
         <Image
-          src={userData?.profilePictures[0] || ""}
+          src={userData?.thumbnailUrl || ""}
           alt="user_profile image"
           fill
           className="rounded-full object-cover object-top"

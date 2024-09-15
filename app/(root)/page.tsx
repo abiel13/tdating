@@ -17,8 +17,8 @@ export default function Home() {
       <div className="w-full h-full md:w-[50vw] md:h-[50%] bg-[#bbb9be04] rounded-lg shadow-lg px-4 py-4 flex flex-col items-center justify-center">
         <Logo />
         <p className="text-gray-500 text-center">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias,
-          veniam beatae! Assumenda modi itaque eveniet!
+          Welcome, To The Flirtgram a Telegram Based Dating App, Ready To
+          Connect
         </p>
         <TelegramLoginButton />
       </div>

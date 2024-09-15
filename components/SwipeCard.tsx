@@ -1,15 +1,12 @@
 "use client";
 
-import {
-  Heart,
-  HeartPulse,
-  User2,
-  X,
-} from "lucide-react";
+import { Heart, HeartPulse, User2, X } from "lucide-react";
 import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
 import SwipeCardAction from "./SwipeCardAction";
 import { useRouter } from "next/navigation";
+import { createMessageRequest } from "@/lib/actions/message.actions";
+import { useUserStore } from "@/providers/user.provider";
 
 interface SwipeCardI {
   fullName: string;
@@ -32,6 +29,21 @@ const SwipeCard = ({
 }: SwipeCardI) => {
   const router = useRouter();
   const [currentImage, setCurrentImage] = useState(0);
+  const { user } = useUserStore((state) => state);
+
+  const handlesmash = async () => {
+    try {
+      const messageRequest = await createMessageRequest(
+        user!.id,
+        id,
+        `${fullName} sent a message request and wants to connect`
+      );
+      incrementIdx();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div
       id="test-card"
@@ -58,22 +70,23 @@ const SwipeCard = ({
             onclick={() => incrementIdx()}
             desc="Pass"
             Icon={X}
-            fill="border-[#ffaaed]"
-            color="#ffaaed"
+            fill="bg-[#ffaaed]"
+            color="#fff"
           />
           <SwipeCardAction
+          onclick={handlesmash}
             desc="Smash"
             Icon={Heart}
-            fill="border-[#9a9aff]"
-            color="#9a9aff"
+            fill="bg-[#9a9aff]"
+            color="#fff"
           />
-   
+
           <SwipeCardAction
             onclick={() => router.push(`dashboard/profile/${id}`)}
             desc="Profile"
             Icon={User2}
-            fill="border-[#afffaf]"
-            color="#afffaf"
+            fill="bg-[#44cc44]"
+            color="#fff"
           />
         </div>
       </div>

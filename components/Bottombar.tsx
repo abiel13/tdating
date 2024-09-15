@@ -28,7 +28,7 @@ const Bottombar = () => {
     },
   ];
   return (
-    <section className="bg-[#0b0c0b] h-[10%] fixed z-50 bottom-0 flex md:hidden w-full items-centerbg-[#0b0c0b] justify-around  items-center">
+    <section className="bg-[#bbb9be04] h-[10%] fixed z-50 bottom-0 flex md:hidden w-full items-centerbg-[#0b0c0b] justify-around  items-center">
       {sidebarlinks.map((item, i) => {
         const active =
           item.href === pathname ||

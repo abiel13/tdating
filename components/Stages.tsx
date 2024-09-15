@@ -10,10 +10,9 @@ import {
   updateUserByName,
 } from "@/lib/actions/user.actions";
 import { validateAge } from "@/lib/utils/utils";
-import { userInfo } from "os";
-import { Router } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useUserStore } from "@/providers/user.provider";
+import { createPreference } from "@/lib/actions/userprefrences.actions";
 
 // stage one creating user with telegram username and chatId
 const StageOne = ({
@@ -50,7 +49,8 @@ const StageOne = ({
         thumbnailUrl: image || "",
         telegramChatId: userInfo.id,
       });
-      console.log(newUser);
+
+      const newUserPreference = await createPreference(newUser.id);
       setStage(1);
     } catch (error) {
       setErrorMsg("Error Creating User Please Try Again");
@@ -71,9 +71,6 @@ const StageOne = ({
     }
   };
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
-  };
 
   return (
     <div className="px-3 py-4 flex flex-col gap-4">
@@ -111,6 +108,7 @@ const StageOne = ({
         <input
           type="text"
           name="first_name"
+          readOnly
           className="text-gray-400 font-sans mt-4 px-3 py-2 rounded-lg w-full bg-transparent border"
           value={userInfo.first_name + " " + userInfo.last_name || ""}
         />
@@ -120,6 +118,7 @@ const StageOne = ({
         <h1 className="font-sans text-white font-bold text-lg">User Name</h1>
         <input
           type="text"
+          readOnly
           name="username"
           className="text-gray-400 font-sans mt-4 px-3 py-2 rounded-lg w-full bg-transparent border"
           value={userInfo.username}
@@ -189,7 +188,7 @@ const StageTwo: React.FC<StageTwoProps> = ({ setStage, userInfo }) => {
       setLoading(true);
       setErrorMsg("");
       const updateUser = await updateUserByName(userInfo.username, formData);
-      console.log(updateUser);
+  
       setStage(2);
     } catch (error) {
       console.log(error);
@@ -281,12 +280,10 @@ const StageThree: React.FC<StageThreeProps> = ({ setStage, userInfo }) => {
     }
 
     // Handle form submission or API call here
-    console.log("Bio:", bio);
     try {
       const updateUser = await updateUserByName(userInfo.username, {
         bio: bio,
       });
-      console.log(updateUser);
       setStage(3);
     } catch (error) {
       console.log(error);
@@ -350,7 +347,7 @@ const StageFour: React.FC<StageThreeProps> = ({ setStage, userInfo }) => {
 
   const handleNext = async () => {
     // Handle form submission or move to the next stage
-    console.log("Selected Hobbies:", selectedHobbies);
+  
 
     if (selectedHobbies.length < 5) {
       setErrorMsg("Select Up to Five Hobbies To Move On");
@@ -362,7 +359,6 @@ const StageFour: React.FC<StageThreeProps> = ({ setStage, userInfo }) => {
       const updatedUser = await updateUserByName(userInfo.username, {
         interests: selectedHobbies,
       });
-      console.log(updatedUser);
       setStage(4);
     } catch (error) {
       console.log(error);
@@ -436,6 +432,7 @@ const StageFive: React.FC<StageThreeProps> = ({ setStage, userInfo }) => {
         profilePictures: images,
         onBoarded: true,
       });
+      
 
       document.cookie = `flirtgram-user=${JSON.stringify({
         id: updatedUser.data._id,

@@ -16,12 +16,13 @@ const SwipeCardAction = ({
   color,
 }: SwipeCardActionI) => {
   return (
-    <div className="flex flex-col items-center ">
+    <div className="flex flex-col items-center  px-2">
       <div
         onClick={onclick}
-        className={`border-[3px] ${fill} w-[80px] h-[80px] flex items-center justify-center rounded-full`}
+        className={` ${fill} px-3 py-2 rounded-lg  flex items-center gap-2`}
       >
-        <Icon fill={color} color={color} size={48} />
+        <p className="text-white font-bold font-sans">{desc}</p>
+        <Icon fill={color} color={color} size={18} />
       </div>{" "}
       <div></div>
     </div>

@@ -35,16 +35,16 @@ export const createMessageRequest = async (
 
 export const getUserMessageRequest = async (toUserId: string) => {
   try {
+    console.log('i came here')
     const messageRequests = await MessageRequests.find({ toUserId })
       .populate("fromUserId")
-      .populate("toUserId");
-    return messageRequests;
+    return JSON.parse(JSON.stringify(messageRequests));
   } catch (error) {
     throw error;
   }
 };
 
-export const updateMessageReqStatus = async (id: string) => {
+export const updateMessageReqStatus = async (id: string, status: string) => {
   try {
     const messageRequest = await MessageRequests.findByIdAndUpdate(
       id,
@@ -62,11 +62,8 @@ export const updateMessageReqStatus = async (id: string) => {
   }
 };
 
-
-export const deleteMessageRequest = async (id:string) => {
-    try {
-        const messageRequest = await MessageRequests.findByIdAndDelete(id);     
-    } catch (error) {
-        
-    }
-}
+export const deleteMessageRequest = async (id: string) => {
+  try {
+    const messageRequest = await MessageRequests.findByIdAndDelete(id);
+  } catch (error) {}
+};

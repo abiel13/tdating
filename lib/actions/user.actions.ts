@@ -39,6 +39,7 @@ export async function getuserById(id: string) {
     }
     return JSON.parse(JSON.stringify(user));
   } catch (error: any) {
+    console.log(error.message);
     message: error.message;
   }
 }
@@ -111,3 +112,14 @@ export async function getUserByLocation(
     throw error;
   }
 }
+
+// export async function getFeed(id: string) {
+//   // fetch user using id ;
+//   const user = await getuserById(id);
+
+//   const { location } = user;
+
+//   // create object for the search
+
+//   // using object  fetch list of suitable matches
+// }

@@ -2,7 +2,6 @@ import mongoose from "mongoose";
 
 // Configures mongoose to omit unknown fields in queries.
 // See https://mongoosejs.com/docs/guide.html#strictQuery for more information
-mongoose.set("strictQuery", true);
 
 const { MONGODB_URI = "" } = process.env;
 
