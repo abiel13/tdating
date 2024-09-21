@@ -35,9 +35,32 @@ export const createMessageRequest = async (
 
 export const getUserMessageRequest = async (toUserId: string) => {
   try {
-    console.log('i came here')
-    const messageRequests = await MessageRequests.find({ toUserId })
-      .populate("fromUserId")
+    const messageRequests = await MessageRequests.find({
+      toUserId,
+    }).populate("fromUserId");
+    return JSON.parse(JSON.stringify(messageRequests));
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getUserSentMessageRequest = async (fromUserId: string) => {
+  try {
+    const messageRequests = await MessageRequests.find({
+      fromUserId,
+    }).populate("toUserId fromUserId");
+    return JSON.parse(JSON.stringify(messageRequests));
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getUserViewedMsgReq = async (toUserId: string) => {
+  try {
+    const messageRequests = await MessageRequests.find({
+      toUserId,
+      status: { $in: ["Rejected", "Accepted"] },
+    }).populate("toUserId fromUserId");    
     return JSON.parse(JSON.stringify(messageRequests));
   } catch (error) {
     throw error;

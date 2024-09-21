@@ -1,6 +1,6 @@
 "use client";
 
-import { Home, MessageCircle, SearchCheck, Star, User } from "lucide-react";
+import { DollarSign, Home, MessageCircle, SearchCheck, Settings, Star, User } from "lucide-react";
 import { useUserStore } from "@/providers/user.provider";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -26,9 +26,19 @@ const Bottombar = () => {
       href: `/dashboard/profile/${user?.id}`,
       Icon: User,
     },
+    {
+      label: "Preferences",
+      href: `/dashboard/preferences/${user?.id}`,
+      Icon: Settings,
+    },
+    {
+      label: "Subscription",
+      href: `/dashboard/subscription/${user?.id}`,
+      Icon: DollarSign,
+    },
   ];
   return (
-    <section className="bg-[#bbb9be04] h-[10%] fixed z-50 bottom-0 flex md:hidden w-full items-centerbg-[#0b0c0b] justify-around  items-center">
+    <section className=" h-[10%] bg-white/1 backdrop-blur-lg  fixed z-50 bottom-0 flex md:hidden w-full  justify-around  items-center">
       {sidebarlinks.map((item, i) => {
         const active =
           item.href === pathname ||
