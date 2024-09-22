@@ -10,10 +10,6 @@ const SentMessages = () => {
   const { user } = useUserStore((state) => state);
   const [loading, setLoading] = useState(false);
 
-  const handlesmash = async () => {};
-
-  const handlepass = async () => {};
-
   useEffect(() => {
     if (!user) {
       return;
@@ -21,8 +17,9 @@ const SentMessages = () => {
     (async function () {
       try {
         setLoading(true);
+        console.log(user);
         const response = await getUserSentMessageRequest(user!.id);
-        console.log(response);
+        console.log(response, "response");
         setMessageReq(response);
       } catch (error) {
         console.log(error);
