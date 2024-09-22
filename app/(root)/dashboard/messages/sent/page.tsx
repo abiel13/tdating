@@ -41,7 +41,7 @@ const SentMessages = () => {
 
   return (
     <div className=" min-h-screen md:h-full w-full flex flex-col items-center px-2 py-3">
-      {messageReq.length > 0 ? (
+      {messageReq?.length > 0 ? (
         <div className="flex flex-col gap-5 w-full min-h-full">
           {messageReq.map((item, i) => {
             return (
