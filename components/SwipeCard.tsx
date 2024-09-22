@@ -36,7 +36,7 @@ const SwipeCard = ({
       const messageRequest = await createMessageRequest(
         user!.id,
         id,
-        `${fullName} sent a message request and wants to connect`
+        `${fullName} u were  sent a message request and wants to connect`
       );
       incrementIdx();
     } catch (error) {

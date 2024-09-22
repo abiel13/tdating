@@ -1,6 +1,6 @@
 "use client";
 
-import { LogOut } from "lucide-react";
+import { DollarSign, LogOut, Settings } from "lucide-react";
 import { Home, MessageCircle, SearchCheck, Star, User } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -27,6 +27,16 @@ const LeftSidebar = () => {
       label: "profile",
       href: `/dashboard/profile/${user?.id}`,
       Icon: User,
+    },
+    {
+      label: "Preferences",
+      href: `/dashboard/preferences/${user?.id}`,
+      Icon: Settings,
+    },
+    {
+      label: "Subscription",
+      href: `/dashboard/subscription/${user?.id}`,
+      Icon: DollarSign,
     },
   ];
 
@@ -57,13 +67,6 @@ const LeftSidebar = () => {
             </Link>
           );
         })}
-      </div>
-
-      <div className="flex items-center gap-4">
-        <LogOut color="white" />
-        <div className="flex flex-col item-start">
-          <p className="text-gray-300">{user?.username}</p>
-        </div>
       </div>
     </section>
   );
