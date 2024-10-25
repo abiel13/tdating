@@ -37,14 +37,14 @@ interface IUser {
 export async function fetchPossibleDates(userId: string): Promise<any[]> {
   try {
     await connectToDB();
-    //Get the user's preferences
+    // Get the user's preferences
     const preferences = await UserPreferences.findOne({ userId }).exec();
-    
+
     if (!preferences) {
       throw new Error("User preferences not found.");
     }
 
-    // Prepare the query to match users
+    // Prepare the age range filters
     const ageLowerBound = new Date();
     ageLowerBound.setFullYear(
       ageLowerBound.getFullYear() - preferences.ageRange.max
@@ -55,31 +55,51 @@ export async function fetchPossibleDates(userId: string): Promise<any[]> {
       ageUpperBound.getFullYear() - preferences.ageRange.min
     );
 
-    const query: any = {
-      _id: { $ne: userId },
-      gender:
-        preferences.preferredGender === "any"
-          ? { $exists: true }
-          : preferences.preferredGender,
-      dateOfBirth: { $gte: ageLowerBound, $lte: ageUpperBound }, // Age range filter
-      location: {
-        $near: {
-          $geometry: {
-            type: "Point",
-            coordinates: preferences.location.coordinates,
+    // Start with an initial radius and set a maximum radius
+    let currentRadius = 10;
+    const maxRadius = preferences.maxDistance; // Maximum radius from preferences
+    let possibleDates: any[] = [];
+
+    // fetch users based on radius
+    const fetchUsers = async (radius: number) => {
+      const query = {
+        _id: { $ne: userId },
+        gender:
+          preferences.preferredGender === "any"
+            ? { $exists: true }
+            : preferences.preferredGender,
+        dateOfBirth: { $gte: ageLowerBound, $lte: ageUpperBound }, // Age range filter
+        location: {
+          $near: {
+            $geometry: {
+              type: "Point",
+              coordinates: preferences.location.coordinates,
+            },
+            $maxDistance: radius * 1000, // Convert to meters
           },
-          $maxDistance: preferences.maxDistance * 1000, // Put Distance in meters
         },
-      },
+      };
+
+      return await User.find(query)
+        .select(
+          "username fullName dateOfBirth gender location interests thumbnailUrl profilePictures"
+        )
+        .limit(20) // Limit the number of results
+        .lean() // Return plain JavaScript objects for performance
+        .exec();
     };
 
-    const possibleDates = await User.find(query)
-      .select(
-        "username fullName dateOfBirth gender location interests thumbnailUrl profilePictures"
-      )
-      .limit(20) // Limit the number of results
-      .lean() // Return plain JavaScript objects for performance
-      .exec();
+    while (currentRadius <= maxRadius) {
+      possibleDates = await fetchUsers(currentRadius);
+      
+      if (possibleDates.length > 0) {
+        console.log(`Found users within ${currentRadius} km.`);
+        break; // Exit the loop if users are found
+      }
+
+      console.log(`No users found within ${currentRadius} km. Expanding search...`);
+      currentRadius += 10; // Increase radius by 10 km for the next iteration
+    }
 
     return JSON.parse(JSON.stringify(possibleDates));
   } catch (error) {
@@ -87,6 +107,7 @@ export async function fetchPossibleDates(userId: string): Promise<any[]> {
     throw error;
   }
 }
+
 
 export async function createPreference(id: string) {
   try {
