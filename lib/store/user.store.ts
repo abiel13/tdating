@@ -22,7 +22,7 @@ export interface User {
 export interface SavedUser {
   id: string;
   username: string;
-  isPremium:boolean;
+  isPremium?:boolean;
 }
 
 export interface Location {
