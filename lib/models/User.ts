@@ -59,6 +59,15 @@ const userSchema = new mongoose.Schema({
     type: [mongoose.Schema.Types.ObjectId],
     ref: "MessageRequest",
   },
+  subscription: {
+    plan: { type: String, enum: ['monthly', 'annual'], default: 'monthly' },
+    status: { type: String, enum: ['active', 'inactive', 'canceled'], default: 'inactive' },
+    startDate: { type: Date },
+    endDate: { type: Date },
+    renewalDate: { type: Date },
+    stripeCustomerId: { type: String },  // Store Stripe customer ID
+    stripeSubscriptionId: { type: String },  // Store Stripe subscription ID
+  },
   createdAt: {
     type: Date,
     default: Date.now,

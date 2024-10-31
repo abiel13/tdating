@@ -13,60 +13,43 @@ const LeftSidebar = () => {
   const { user } = useUserStore((state) => state);
 
   const sidebarlinks = [
-    {
-      label: "Home",
-      href: "/dashboard",
-      Icon: Home,
-    },
-    {
-      label: "Messages",
-      href: "/dashboard/messages",
-      Icon: MessageCircle,
-    },
-    {
-      label: "profile",
-      href: `/dashboard/profile/${user?.id}`,
-      Icon: User,
-    },
-    {
-      label: "Preferences",
-      href: `/dashboard/preferences/${user?.id}`,
-      Icon: Settings,
-    },
-    {
-      label: "Subscription",
-      href: `/dashboard/subscription/${user?.id}`,
-      Icon: DollarSign,
-    },
+    { label: "Home", href: "/dashboard", Icon: Home },
+    { label: "Messages", href: "/dashboard/messages", Icon: MessageCircle },
+    { label: "Profile", href: `/dashboard/profile/${user?.id}`, Icon: User },
+    { label: "Subscription", href: `/dashboard/subscription`, Icon: DollarSign },
   ];
 
   return (
-    <section className="bg-[#bbb9be04] border-r border-gray-400  w-[20%] h-screen px-3 py-3 md:flex flex-col justify-between sticky top-0 hidden">
-      <div className="py-4 px  mb-[2rem]">
-        <h1 className="text-white font-bold text-3xl ">
-          <Logo />
-        </h1>
+    <section className="bg-[#060218] border-r border-gray-600 w-[20%] h-screen px-5 py-6 hidden flex-col justify-between sticky top-0  md:flex">
+      <div className="flex items-center justify-start mb-8">
+        <Logo />
       </div>
 
-      <div className="flex flex-col gap-8 flex-1">
+      <div className="flex flex-col gap-6">
         {sidebarlinks.map((item, i) => {
-          const active =
-            item.href === pathname ||
-            (pathname.startsWith(`${item.href}/`) &&
-              item.href !== "/dashboard");
+           const isActive =
+           item.href === pathname ||
+           (pathname.startsWith(`${item.href}/`) && item.href !== "/dashboard");
           return (
             <Link
               key={i}
-              className={`${
-                active ? "bg-primary" : "bg-gray-600/50"
-              } flex items-center gap-3 py-2 px-3 rounded-lg`}
               href={item.href}
+              className={`flex items-center gap-4 p-3 rounded-md transition-colors duration-200 ${
+                isActive ? "bg-primary text-white" : "bg-gray-700/40 text-gray-200"
+              } hover:bg-gray-600`}
             >
-              <item.Icon color="white" />
-              <p className="text-white">{item.label}</p>
+              <item.Icon color={isActive ? "#ffffff" : "#a0a0a0"} />
+              <p className={`text-base font-medium ${isActive ? "text-white" : "text-gray-300"}`}>
+                {item.label}
+              </p>
             </Link>
           );
         })}
+      </div>
+
+      <div className="mt-auto flex items-center gap-4 p-3 rounded-md bg-gray-700/40 hover:bg-gray-600 transition-colors duration-200">
+        <LogOut color="#ffffff" />
+        <p className="text-gray-300 font-medium">Logout</p>
       </div>
     </section>
   );

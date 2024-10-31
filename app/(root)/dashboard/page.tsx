@@ -30,25 +30,25 @@ const Dashboard = () => {
         setLoading(true);
         //  get user location and save it to db
         if (!saved) {
-          // try {
-          //   const { latitude, longitude } = await getLocation();
-          //   const update = await updateUser(user!.id, {
-          //     location: {
-          //       type: "Point",
-          //       coordinates: [latitude, longitude],
-          //     },
-          //   });
-          //   const updatePreferences = await updateByUserId(user!.id, {
-          //     location: {
-          //       type: "Point",
-          //       coordinates: [latitude, longitude],
-          //     },
-          //   });
-          //   setSaved(true);
-          // } catch (error) {
-          //   console.log(error);
-          //   setLocationerror(true);
-          // }
+          try {
+            const { latitude, longitude } = await getLocation();
+            const update = await updateUser(user!.id, {
+              location: {
+                type: "Point",
+                coordinates: [latitude, longitude],
+              },
+            });
+            const updatePreferences = await updateByUserId(user!.id, {
+              location: {
+                type: "Point",
+                coordinates: [latitude, longitude],
+              },
+            });
+            setSaved(true);
+          } catch (error) {
+            console.log(error);
+            setLocationerror(true);
+          }
         }
         // fetch feed based on current preferences
         const dates = await fetchPossibleDates(user!.id);
