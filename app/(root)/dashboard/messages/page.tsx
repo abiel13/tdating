@@ -27,6 +27,7 @@ const Messages = () => {
         toUserId
       );
       if (updateReq) {
+        console.log(updateReq)
         setref((prev) => !prev);
       }
     } catch (error) {
@@ -57,7 +58,7 @@ const Messages = () => {
     );
 
   return (
-    <div className="min-h-screen w-full flex flex-col items-center py-6 px-4  text-white">
+    <div className="min-h-screen w-full flex flex-col items-center py-6 px-4  text-white bg-gradient-to-b from-gray-800 to-black">
       {messageReq?.length > 0 ? (
         <div className="flex flex-col gap-6 w-full max-w-3xl">
           {messageReq.map((item, i) => (
