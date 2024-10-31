@@ -81,7 +81,7 @@ const StageOne = ({
   };
 
   return (
-    <div className="p-5 flex flex-col gap-5 bg-gray-900 rounded-lg shadow-lg">
+    <div className="p-5 flex flex-col gap-5 bg-gray-900 rounded-lg shadow-lg w-[95%] md:w-[80%] mx-auto">
       <div className="flex items-center gap-6">
         <label className="h-20 w-20 rounded-full flex items-center justify-center bg-gray-800 cursor-pointer">
           {image ? (
@@ -189,7 +189,7 @@ const StageTwo = ({
   };
 
   return (
-    <div className="p-5 flex flex-col gap-5 bg-gray-900 rounded-lg shadow-lg">
+    <div className="p-5 flex flex-col gap-5 bg-gray-900 rounded-lg shadow-lg w-[95%] md:w-[80%] mx-auto">
       <h1 className="text-white text-xl font-semibold text-center">
         Tell Us More About You
       </h1>
@@ -255,7 +255,7 @@ const StageThree: React.FC<StageThreeProps> = ({ setStage, userInfo }) => {
   };
 
   return (
-    <div className="flex flex-col gap-6 px-4 py-6 bg-gray-900 rounded-lg shadow-lg">
+    <div className="flex flex-col gap-6 px-4 py-6 bg-gray-900 rounded-lg shadow-lg w-[95%] md:w-[80%] mx-auto">
       <div className="text-center">
         <h1 className="text-white text-2xl font-semibold">Describe Yourself</h1>
       </div>
