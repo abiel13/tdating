@@ -79,7 +79,7 @@ console.log(session)
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {subscriptionPlans.map((plan) => (
-          <div key={plan.id} className="bg-[#1b1338] rounded-lg shadow-lg p-6">
+          <div key={plan.id} className="bg-[#1b1338] rounded-lg shadow-lg p-6 flex flex-col justify-between">
             <h3 className="text-xl font-semibold text-gray-200 mb-2">
               {plan.title}
             </h3>

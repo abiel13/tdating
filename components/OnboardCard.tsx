@@ -6,7 +6,7 @@ const totalStages = 5;
 const OnboardCard = ({ userInfo }: { userInfo: any }) => {
   const [stage, setStage] = useState(0);
   return (
-    <div className="w-[90vw] md:w-[40vw] rounded-lg shadow-xl min-h-[60vh] bg-[rgb(0,22,43)]">
+    <div className="w-[100vw] md:w-[40vw] rounded-lg shadow-xl min-h-[60vh] bg-[rgb(0,22,43)]">
       {/* stage indicator */}
       <div
         style={{

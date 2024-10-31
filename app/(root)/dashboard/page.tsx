@@ -64,9 +64,9 @@ const Dashboard = () => {
   return (
     <>
       {loading ? (
-        <div className="md:h-full w-full items-center justify-center flex min-h-screen">
-          <Circles  />
-        </div>
+       <div className="flex items-center justify-center w-full h-screen">
+       <Circles color="#4f46e5" />
+     </div>
       ) : (
         <>
           {hasMore ? (
