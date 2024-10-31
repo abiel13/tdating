@@ -1,12 +1,11 @@
 "use client";
-import NotFound from "@/components/NotFound";
-import {
-  getUserMessageRequest,
-  updateMessageReqStatus,
-} from "@/lib/actions/message.actions";
+
+import { getUserMessageRequest, updateMessageReqStatus } from "@/lib/actions/message.actions";
 import { useUserStore } from "@/providers/user.provider";
 import Link from "next/link";
+import Image from "next/image";
 import React, { useEffect, useState } from "react";
+import { Loader, UserX, UserCheck } from "lucide-react"; // Example icons
 
 const Messages = () => {
   const [messageReq, setMessageReq] = useState<any[]>([]);
@@ -27,10 +26,8 @@ const Messages = () => {
         fromUserId,
         toUserId
       );
-      console.log(updateReq);
-      // const smashed
-
       if (updateReq) {
+        console.log(updateReq)
         setref((prev) => !prev);
       }
     } catch (error) {
@@ -39,15 +36,12 @@ const Messages = () => {
   };
 
   useEffect(() => {
-    if (!user) {
-      return;
-    }
+    if (!user) return;
     (async function () {
       try {
         setLoading(true);
         const response = await getUserMessageRequest(user!.id);
         setMessageReq(response);
-        console.log(response);
       } catch (error) {
         console.log(error);
       } finally {
@@ -58,70 +52,73 @@ const Messages = () => {
 
   if (loading)
     return (
-      <div className="text-white font-bold text-xl text-center w-full h-screen">
-        please wait loading...
+      <div className="text-white font-bold text-lg text-center w-full h-screen flex items-center justify-center bg-gradient-to-b from-gray-800 to-black">
+        <Loader className="animate-spin text-purple-400" size={50} />
       </div>
     );
 
   return (
-    <div className=" min-h-screen md:h-full w-full flex flex-col items-center px-2 py-3">
+    <div className="min-h-screen w-full flex flex-col items-center py-6 px-4  text-white bg-gradient-to-b from-gray-800 to-black">
       {messageReq?.length > 0 ? (
-        <div className="flex flex-col gap-5 w-full min-h-full">
-          {messageReq.map((item, i) => {
-            return (
-              <div
-                key={i}
-                className="w-full min-h-[150px] 
-                bg-white/40 px-2 py-2 rounded-lg flex flex-col gap-1"
-              >
-                <h3 className="text-white capitalize font-medium  font-sans text-lg">
-                  {item.fromUserId.fullName}
-                </h3>
-                <p className="text-white">{item.message}</p>
-                <div className="mt-3 flex items-center gap-4">
-                  <Link
-                    className="bg-blue-500 rounded-lg px-5 py-2 text-white w-fit "
-                    href={`/dashboard/profile/${item.fromUserId._id}`}
-                  >
-                    Visit Profile
-                  </Link>
-
-                  <button
-                    className="px-6 text-white font-medium tracking-wide py-2 rounded-lg bg-green-600"
-                    onClick={() =>
-                      handleclick(
-                        item._id,
-                        "Accepted",
-                        item.toUserId._id,
-                        item.fromUserId._id
-                      )
-                    }
-                  >
-                    Smash
-                  </button>
-                  <button
-                    className="px-6 text-white font-medium tracking-wide py-2 rounded-lg bg-red-400"
-                    onClick={() =>
-                      handleclick(
-                        item._id,
-                        "Rejected",
-                        item.toUserId._id,
-                        item.fromUserId._id
-                      )
-                    }
-                  >
-                    Pass
-                  </button>
-                </div>
+        <div className="flex flex-col gap-6 w-full max-w-3xl">
+          {messageReq.map((item, i) => (
+            <div
+              key={i}
+              className="w-full bg-gradient-to-r from-[#120f20] to-[#010929] bg-opacity-90 backdrop-blur-md p-5 rounded-3xl shadow-lg transform transition hover:scale-[1.02] hover:shadow-2xl"
+            >
+              <h3 className="text-2xl font-semibold mb-1">{item.fromUserId.fullName}</h3>
+              <p className="text-gray-300 text-base mb-4">{item.message}</p>
+              <div className="flex gap-4 flex-wrap items-center">
+                <Link
+                  href={`/dashboard/profile/${item.fromUserId._id}`}
+                  className="flex items-center justify-center bg-blue-500 hover:bg-blue-700 text-white font-medium px-6 py-2 rounded-full transition-all transform hover:scale-105"
+                >
+                  <span className="mr-2">Profile</span> <UserCheck size={20} />
+                </Link>
+                <button
+                  onClick={() =>
+                    handleclick(
+                      item._id,
+                      "Accepted",
+                      item.toUserId._id,
+                      item.fromUserId._id
+                    )
+                  }
+                  className="flex items-center justify-center bg-green-500 hover:bg-green-700 text-white font-medium px-6 py-2 rounded-full transition-all transform hover:scale-105"
+                >
+                  <span className="mr-2">Accept</span> <UserCheck size={20} />
+                </button>
+                <button
+                  onClick={() =>
+                    handleclick(
+                      item._id,
+                      "Rejected",
+                      item.toUserId._id,
+                      item.fromUserId._id
+                    )
+                  }
+                  className="flex items-center justify-center bg-red-500 hover:bg-red-700 text-white font-medium px-6 py-2 rounded-full transition-all transform hover:scale-105"
+                >
+                  <span className="mr-2">Decline</span> <UserX size={20} />
+                </button>
               </div>
-            );
-          })}
+            </div>
+          ))}
         </div>
       ) : (
-        <NotFound
-          title="No Message Request Found"
-          desc="try updating your profile to get more views and message request"
-        />
+        <div className="flex flex-col items-center gap-5 py-12">
+          <Image
+            src="/assets/notfound.png"
+            alt="Not Found"
+            width={250}
+            height={250}
+            className="object-contain"
+          />
+          <h1 className="text-2xl font-bold text-white">No Messages Found</h1>
+          <p className="text-gray-400 text-center">
+            It looks like you don’t have any messages at the moment.
+          </p>
+        </div>
       )}
     </div>
   );

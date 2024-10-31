@@ -65,7 +65,7 @@ const Dashboard = () => {
     <>
       {loading ? (
         <div className="md:h-full w-full items-center justify-center flex min-h-screen">
-          <Circles />
+          <Circles  />
         </div>
       ) : (
         <>

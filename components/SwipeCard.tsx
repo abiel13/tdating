@@ -1,8 +1,8 @@
 "use client";
 
-import { Heart, HeartPulse, User2, X } from "lucide-react";
+import { Heart, User2, X } from "lucide-react";
 import Image from "next/image";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import SwipeCardAction from "./SwipeCardAction";
 import { useRouter } from "next/navigation";
 import { createMessageRequest } from "@/lib/actions/message.actions";
@@ -33,10 +33,10 @@ const SwipeCard = ({
 
   const handlesmash = async () => {
     try {
-      const messageRequest = await createMessageRequest(
+      await createMessageRequest(
         user!.id,
         id,
-        `${fullName} u were  sent a message request and wants to connect`
+        `${fullName}, you were sent a message request and want to connect`
       );
       incrementIdx();
     } catch (error) {
@@ -46,63 +46,65 @@ const SwipeCard = ({
 
   return (
     <div
-      id="test-card"
-      className={` ${
+      className={`${
         isOpaque ? "opacity-100 scale-100" : "opacity-0 scale-0"
-      } bg-gray-600 absolute md:w-[450px] transition-all ease-in-out duration-300 w-[97%] md:h-[570px] h-[90vh]  rounded-t-xl `}
+      } bg-gray-700 absolute w-[95%] max-w-lg md:w-[450px] h-[90vh] md:h-[570px] transition-transform duration-300 rounded-xl shadow-lg overflow-hidden`}
     >
-      <div className="relative w-full h-[100%] md:h-[100%]">
+      {/* Image Display */}
+      <div className="relative w-full h-3/4 overflow-hidden">
         <Image
           src={profilePictures[currentImage]}
-          alt="image"
-          className="object-cover rounded-t-xl pointer-events-none"
+          alt={`${fullName} profile picture`}
+          className="object-cover w-full h-full"
           fill
         />
-      </div>{" "}
-      <div className="absolute -bottom-3 w-full z-10 bg-black/80  px-3">
-        <h1 className="text-white font-semibold text-3xl">
-          {fullName} <span className="font-medium">{Age()}</span>
-        </h1>
-        <p className="text-gray-400 capitalize text-lg">{bio}</p>
+        <div className="absolute top-2 left-2 flex gap-1 w-[90%] h-2">
+          {profilePictures.map((_, i) => (
+            <div
+              key={i}
+              className={`${
+                currentImage === i ? "bg-white" : "bg-gray-500"
+              } rounded-full flex-1 h-full transition-all duration-200 cursor-pointer`}
+              onClick={() => setCurrentImage(i)}
+            />
+          ))}
+        </div>
+      </div>
 
-        <div className="flex flex-row  justify-center gap-2 mt-8">
+      {/* Profile Details */}
+      <div className="relative bg-gradient-to-t from-gray-900 via-transparent to-transparent px-6 pt-4 pb-6 flex flex-col items-center space-y-3 text-center text-white">
+        <h1 className="text-2xl font-semibold">
+          {fullName}, <span className="font-medium text-lg">{Age()}</span>
+        </h1>
+        <p className="text-gray-300 text-sm leading-relaxed">{bio}</p>
+
+        {/* Action Buttons */}
+        <div className="flex justify-center gap-4 pt-4">
           <SwipeCardAction
             onclick={() => incrementIdx()}
             desc="Pass"
             Icon={X}
-            fill="bg-[#ffaaed]"
-            color="#fff"
+            fill="bg-red-500"
+            color="white"
+            className="hover:scale-105 transition-transform duration-200"
           />
           <SwipeCardAction
-          onclick={handlesmash}
+            onclick={handlesmash}
             desc="Smash"
             Icon={Heart}
-            fill="bg-[#9a9aff]"
-            color="#fff"
+            fill="bg-pink-500"
+            color="white"
+            className="hover:scale-105 transition-transform duration-200"
           />
-
           <SwipeCardAction
             onclick={() => router.push(`dashboard/profile/${id}`)}
             desc="Profile"
             Icon={User2}
-            fill="bg-[#44cc44]"
-            color="#fff"
+            fill="bg-green-500"
+            color="white"
+            className="hover:scale-105 transition-transform duration-200"
           />
         </div>
-      </div>
-      <div className="w-full h-[10px] absolute top-2 flex px-2 gap-1">
-        {profilePictures.map((item, i) => {
-          const active = currentImage === i;
-          return (
-            <div
-              key={i}
-              className={` ${
-                active ? "bg-white" : "bg-gray-800/70"
-              }  border border-white  flex-1 rounded-xl`}
-              onClick={() => setCurrentImage(i)}
-            />
-          );
-        })}
       </div>
     </div>
   );
