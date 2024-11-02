@@ -6,12 +6,13 @@ import Link from "next/link";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { Loader, UserX, UserCheck } from "lucide-react"; // Example icons
+import { usePathname } from "next/navigation";
 
 const Messages = () => {
   const [messageReq, setMessageReq] = useState<any[]>([]);
   const { user } = useUserStore((state) => state);
   const [loading, setLoading] = useState(false);
-  const [ref, setref] = useState(false);
+  const pathname = usePathname()
 
   const handleclick = async (
     id: string,
@@ -24,11 +25,12 @@ const Messages = () => {
         id,
         status,
         fromUserId,
-        toUserId
+        toUserId,
+        pathname
       );
       if (updateReq) {
         console.log(updateReq)
-        setref((prev) => !prev);
+     
       }
     } catch (error) {
       console.log(error);
@@ -48,7 +50,7 @@ const Messages = () => {
         setLoading(false);
       }
     })();
-  }, [user, ref]);
+  }, [user,]);
 
   if (loading)
     return (

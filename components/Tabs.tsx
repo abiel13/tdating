@@ -34,7 +34,6 @@ const MeTabs = () => {
       <div className="flex items-center gap-6">
         <MetabLinks href="/dashboard/messages" title="Received" />
         <MetabLinks href="/dashboard/messages/sent" title="Sent" />
-        <MetabLinks href="/dashboard/messages/viewed" title="Viewed" />
       </div>
     </div>
   );
