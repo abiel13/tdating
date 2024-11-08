@@ -2,53 +2,42 @@
 import React from "react";
 import { createSession } from "@/lib/actions/stripe.actions";
 import { loadStripe } from "@stripe/stripe-js";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 // Mock subscription data
 const subscriptionPlans = [
   {
     id: 0,
     title: "Free Plan",
-     line_item: {
+    line_item: {
       price_data: {
         currency: "usd",
-        product_data: {
-          name: "Free Plan",
-        },
-        unit_amount: 0.00,
+        product_data: { name: "Free Plan" },
+        unit_amount: 0.0,
         tax_behavior: "exclusive",
       },
       quantity: 1,
     },
     features: [
-      "Acess to Basic features",
+      "Access to Basic features",
       "Limited matches",
       "Limited distance search",
     ],
   },
   {
     id: 1,
-    title: "Montly Plan",
+    title: "Monthly Plan",
     line_item: {
       price_data: {
         currency: "usd",
-        product_data: {
-          name: "Monthly FlirtGram Plan",
-        },
-        recurring: {
-          interval: "month", // Options: "day", "week", "month", or "year"
-          interval_count: 1, // Number of intervals (e.g., 1 month or 12 months)
-        },
-        unit_amount: 1,
+        product_data: { name: "Monthly FlirtGram Plan" },
+        recurring: { interval: "month", interval_count: 1 },
+        unit_amount: 100,
         tax_behavior: "exclusive",
       },
       quantity: 1,
     },
-    features: [
-      "Access to basic features",
-      "Limited matches",
-      "Monthly updates",
-    ],
+    features: ["Access to basic features", "Limited matches", "Monthly updates"],
   },
   {
     id: 2,
@@ -56,13 +45,8 @@ const subscriptionPlans = [
     line_item: {
       price_data: {
         currency: "usd",
-        product_data: {
-          name: "Annual FlirtGram Plan",
-        },
-        recurring: {
-          interval: "year", // Options: "day", "week", "month", or "year"
-          interval_count: 1, // Number of intervals (e.g., 1 month or 12 months)
-        },
+        product_data: { name: "Annual FlirtGram Plan" },
+        recurring: { interval: "year", interval_count: 1 },
         unit_amount: 14400,
         tax_behavior: "exclusive",
       },
@@ -82,17 +66,20 @@ const stripePromise = loadStripe(process.env.STRIPE_PUBLISHABLE_KEY!);
 const SubscriptionPage = () => {
   const router = useRouter();
 
-
   const handleCheckout = async (line_item:any) => {
     try {
       const session = await createSession([line_item]);
-      console.log(session);
       if (session) {
         router.push(session.url!);
       }
-    } catch (error: any) {
+    } catch (error:any) {
       console.log(error.message);
     }
+  };
+
+  const handleManageSubscription = () => {
+    // Replace with actual customer portal URL or a function to create a session for customer portal
+    router.push("/manage-subscription");
   };
 
   return (
@@ -109,7 +96,8 @@ const SubscriptionPage = () => {
               {plan.title}
             </h3>
             <p className="text-2xl font-bold text-white mb-4">
-              ${plan.line_item.price_data.unit_amount.toFixed(2)} / month
+              ${plan.line_item.price_data.unit_amount.toFixed(2)} /{" "}
+              {plan.line_item.price_data.recurring?.interval || "one-time"}
             </p>
             <h4 className="text-lg font-semibold text-gray-300 mb-2">
               Features:
@@ -121,13 +109,21 @@ const SubscriptionPage = () => {
             </ul>
             <button
               onClick={() => handleCheckout(plan.line_item)}
-              className="w-full py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:ring-2 focus:ring-blue-500"
+              className="w-full py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 mb-2"
             >
               Subscribe
             </button>
           </div>
         ))}
       </div>
+
+      {/* Manage Subscription button */}
+      <button
+        onClick={handleManageSubscription}
+        className="mt-8 py-2 px-4 text-white bg-green-600 rounded-lg hover:bg-green-700 focus:ring-2 focus:ring-green-500"
+      >
+        Manage Subscription
+      </button>
     </div>
   );
 };

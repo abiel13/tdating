@@ -67,6 +67,7 @@ const SentMessages = () => {
                     <p className="text-gray-200">
                       You can message them here:{" "}
                       <Link
+                      target={'_blank'}
                         href={`https://t.me/${item.toUserId.username}`}
                         className="text-blue-300 underline"
                       >
