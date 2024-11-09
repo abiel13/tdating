@@ -1,19 +1,38 @@
-import React, { useState } from 'react';
-import Slider from './Slider';
-import Modal from './Modal';
-import Link from 'next/link';
+"use client";
+import React, { useEffect, useState } from "react";
+import Slider from "./Slider";
+import Modal from "./Modal";
+import Link from "next/link";
+import {
+  getUserPrefrences,
+  updateByUserId,
+} from "@/lib/actions/userprefrences.actions";
+import AgeRangeSlider from "./AgeSlider";
+import { ValueIcon } from "@radix-ui/react-icons";
+import { usePathname } from "next/navigation";
 
+function UserPreferences({ user }: any) {
+  const [preferences, setPreferences] = useState({
+    distance: 0,
+    age: {
+      min: 18,
+      max: 100,
+    },
+    gender: "any",
+    visibility: "Public",
+  });
 
-function UserPreferences({ user }:any) {
   const [distance, setDistance] = useState(50);
+  const [Age, setAge] = useState(18);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [preferencesChanged, setPreferencesChanged] = useState(false);
+  const pathname = usePathname();
 
-  const handleDistanceChange = (value:number) => {
+  const handleDistanceChange = (value: number) => {
     if (!user?.isPremium && value > 1000) {
       setIsModalOpen(true); // Open the modal if non-premium user exceeds 1000
     } else {
-      setDistance(value);
+      setPreferences({ ...preferences, distance: value });
       setPreferencesChanged(true); // Enable save button when preference is changed
     }
   };
@@ -22,10 +41,51 @@ function UserPreferences({ user }:any) {
     setPreferencesChanged(true);
   };
 
-  const handleSavePreferences = () => {
-    // Add logic to save preferences here
-    setPreferencesChanged(false); // Disable button after saving
+  const handleVisibilityChange = (value: string) => {
+    if (!user?.isPremium && value === "Private") {
+      setIsModalOpen(true); // Open the modal if non-premium user exceeds 1000
+    } else {
+      setPreferences({ ...preferences, visibility: value });
+      setPreferencesChanged(true); // Enable save button when preference is changed
+    }
   };
+
+  const handleSavePreferences = async () => {
+    const obj = {
+      maxDistance: preferences.distance,
+      preferredGender: preferences.gender,
+      ageRange: preferences.age,
+      visibility: preferences.visibility,
+    };
+
+    try {
+      const update = await updateByUserId(user, obj, pathname);
+    } catch (error) {
+    } finally {
+      setPreferencesChanged(false);
+    }
+
+    // Add logic to save preferences here
+    // Disable button after saving
+  };
+
+  useEffect(() => {
+    (async function () {
+      try {
+        const userp = await getUserPrefrences(user);
+        if (userp) {
+          setPreferences({
+            distance: userp.maxDistance,
+            age: userp.ageRange,
+            gender: userp.preferredGender,
+            visibility: "Public",
+          });
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    })();
+  }, []);
 
   return (
     <div className="bg-gray-800 p-4 rounded-lg mt-6">
@@ -34,15 +94,34 @@ function UserPreferences({ user }:any) {
       {/* Age Preference */}
       <div className="mt-4">
         <label className="block text-sm font-medium mb-2">Age Preference</label>
-        <input
-          type="range"
-          min="18"
-          max="100"
-          step="1"
-          className="w-full"
-          onChange={handlePreferenceChange}
+        <AgeRangeSlider
+          max={preferences.age.max}
+          min={preferences.age.min}
+          setMin={(value: number) => {
+            setPreferencesChanged(true);
+            setPreferences({
+              ...preferences,
+              age: {
+                min: value,
+                max: preferences.age.max,
+              },
+            });
+          }}
+          setMax={(value: number) => {
+            setPreferencesChanged(true);
+            setPreferences({
+              ...preferences,
+              age: {
+                max: value,
+                min: preferences.age.min,
+              },
+            });
+          }}
         />
-        <p className="text-xs text-gray-400">Adjust your preferred age range.</p>
+
+        <p className="text-xs text-gray-400">
+          Adjust your preferred age range.
+        </p>
       </div>
 
       {/* Distance Range */}
@@ -52,11 +131,12 @@ function UserPreferences({ user }:any) {
           min={0}
           max={10000}
           step={10}
-          value={distance}
+          value={preferences.distance}
           onChange={handleDistanceChange}
         />
         <p className="text-xs text-gray-400">
-          Set your search distance (up to {user?.isPremium ? "10,000" : "1,000"} km).
+          Set your search distance (up to {user?.isPremium ? "10,000" : "1,000"}{" "}
+          km).
         </p>
       </div>
 
@@ -76,38 +156,45 @@ function UserPreferences({ user }:any) {
 
       {/* Gender Preference */}
       <div className="mt-4">
-        <label className="block text-sm font-medium mb-2">Gender Preference</label>
+        <label className="block text-sm font-medium mb-2">
+          Gender Preference
+        </label>
         <select
+          value={preferences.gender}
           className="w-full px-3 py-2 rounded-lg bg-gray-700 text-gray-100"
-          onChange={handlePreferenceChange}
+          onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+            setPreferences({ ...preferences, gender: e.target.value });
+          }}
         >
-          <option>All</option>
-          <option>Male</option>
-          <option>Female</option>
-          <option>Non-binary</option>
+          <option value={"any"}>Any</option>
+          <option value={"Male"}>Male</option>
+          <option value={"Female"}>Female</option>
+          <option value={"Non-binary"}>Non-binary</option>
         </select>
-        <p className="text-xs text-gray-400">Select preferred genders to match with.</p>
+        <p className="text-xs text-gray-400 mt-4">
+          Select preferred genders to match with.
+        </p>
       </div>
 
       {/* Profile Visibility */}
       <div className="mt-4">
-        <label className="block text-sm font-medium mb-2">Profile Visibility</label>
+        <label className="block text-sm font-medium mb-2">
+          Profile Visibility
+        </label>
         <select
           className="w-full px-3 py-2 rounded-lg bg-gray-700 text-gray-100"
-          onChange={handlePreferenceChange}
+          value={preferences.visibility}
+          onChange={(e) => handleVisibilityChange(e.target.value)}
         >
-          <option>Public</option>
-          <option>Private</option>
+          <option value={"Public"}>Public</option>
+          <option value={"Private"}>Private</option>
         </select>
-        <p className="text-xs text-gray-400">Choose who can view your profile.</p>
+        <p className="text-xs text-gray-400">
+          Choose who can view your profile.
+        </p>
       </div>
 
       {/* Notification Settings */}
-      <div className="mt-4">
-        <label className="block text-sm font-medium mb-2">Notifications</label>
-        <input type="checkbox" className="mr-2" onChange={handlePreferenceChange} />
-        <span className="text-sm">Receive email notifications</span>
-      </div>
 
       {/* Save Preferences Button */}
       <button
@@ -122,10 +209,10 @@ function UserPreferences({ user }:any) {
       {isModalOpen && (
         <Modal onClose={() => setIsModalOpen(false)}>
           <p className="text-center text-gray-800">
-            Upgrade to premium to set a distance range up to 10,000 km.
+            Upgrade to premium to access this feature
           </p>
           <Link
-          href={'/dashboard/subscription'}
+            href={"/dashboard/subscription"}
             className="mt-4 px-4 py-2 bg-green-500 text-white rounded-lg"
           >
             Go to Subscription Page

@@ -85,7 +85,6 @@ export const updateMessageReqStatus = async (
   
   try {
     // Update the message request status
-    console.log('hello')
     const messageRequest = await MessageRequests.findByIdAndUpdate(
       id,
       { status },
@@ -103,6 +102,7 @@ export const updateMessageReqStatus = async (
         User.findById(fromUserId).session(session),
         User.findById(toUserId).session(session),
       ]);
+      console.log(toUserId)
 
       if (!fromUser || !toUser) {
         await session.abortTransaction();

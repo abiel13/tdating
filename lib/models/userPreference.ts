@@ -25,6 +25,10 @@ const userPreferencesSchema = new mongoose.Schema(
         max: 100,
       },
     },
+    visibility: {
+      type: String,
+      enum: ["Public", "Private"],
+    },
     maxDistance: {
       type: Number,
       default: 500,

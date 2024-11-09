@@ -57,7 +57,7 @@ const UserProfile = () => {
 
           {/* User Preferences */}
           {isMe && (
-          <UserPrefrences />
+          <UserPrefrences user={id} />
           )}
         </div>
       )}
