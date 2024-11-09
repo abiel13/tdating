@@ -3,6 +3,7 @@
 import mongoose from "mongoose";
 import User from "../models/User";
 import MessageRequests from "../models/message";
+import { revalidatePath } from "next/cache";
 
 export const createMessageRequest = async (
   fromUserId: string,
@@ -70,14 +71,18 @@ export const getUserViewedMsgReq = async (toUserId: string) => {
   }
 };
 
+
+
 export const updateMessageReqStatus = async (
   id: string,
   status: string,
   fromUserId: string,
-  toUserId: string
+  toUserId: string,
+  path:string,
 ) => {
   const session = await mongoose.startSession();
   session.startTransaction();
+  
   try {
     // Update the message request status
     const messageRequest = await MessageRequests.findByIdAndUpdate(
@@ -90,12 +95,14 @@ export const updateMessageReqStatus = async (
       await session.abortTransaction();
       return { error: "Message Request Not Found, Confirm Username" };
     }
+
     if (status === "Accepted") {
       // Fetch users in parallel as part of the transaction
       const [fromUser, toUser] = await Promise.all([
         User.findById(fromUserId).session(session),
         User.findById(toUserId).session(session),
       ]);
+      console.log(toUserId)
 
       if (!fromUser || !toUser) {
         await session.abortTransaction();
@@ -112,22 +119,18 @@ export const updateMessageReqStatus = async (
         toUser.matches.push(fromUserId);
         await toUser.save({ session });
       }
-
-      // Commit the transaction after all updates are successful
-      await session.commitTransaction();
-      session.endSession();
-      return JSON.parse(JSON.stringify(messageRequest));
-    } else {
-      // Commit the transaction after all updates are successful
-      await session.commitTransaction();
-      session.endSession(); 
-      return JSON.parse(JSON.stringify(messageRequest));
     }
-  } catch (error: any) {
-    // Better error reporting
-    throw new Error(
-      `Failed to update message request status: ${error.message}`
-    );
+
+    // Commit transaction after all updates
+    await session.commitTransaction();
+    revalidatePath(path);
+  
+    return JSON.parse(JSON.stringify(messageRequest));
+  } catch (error:any) {
+    await session.abortTransaction(); // Ensure transaction is aborted on error
+    return { error: `Failed to update message request status: ${error.message || ""}` };
+  } finally {
+    session.endSession(); // Ensure session ends after try-catch
   }
 };
 

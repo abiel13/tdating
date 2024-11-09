@@ -5,18 +5,16 @@ interface SliderProps {
   min: number;
   max: number;
   step: number;
-  defaultValue: number;
+  value: number;
   onChange?: (value: number) => void;
 }
 
-const Slider: React.FC<SliderProps> = ({ min, max, step, defaultValue, onChange }) => {
-  const [value, setValue] = useState(defaultValue);
+const Slider: React.FC<SliderProps> = ({ min, max, step, value, onChange }) => {
+
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newValue = parseInt(e.target.value, 10);
-    setValue(newValue);
     if (onChange) {
-      onChange(newValue);
+      onChange(Number(e.target.value));
     }
   };
 

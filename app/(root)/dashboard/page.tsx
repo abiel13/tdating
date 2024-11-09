@@ -9,6 +9,7 @@ import {
 import { calculateAge, getLocation } from "@/lib/utils/utils";
 import { useLocationStore } from "@/providers/location.provider";
 import { useUserStore } from "@/providers/user.provider";
+import { usePathname } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { Circles } from "react-loader-spinner";
 
@@ -20,6 +21,7 @@ const Dashboard = () => {
   const { user } = useUserStore((state) => state);
   const [locationerror, setLocationerror] = useState(false);
   const { saved, setSaved } = useLocationStore((state) => state);
+  const pathname = usePathname();
 
   useEffect(() => {
     (async function () {
@@ -38,12 +40,16 @@ const Dashboard = () => {
                 coordinates: [latitude, longitude],
               },
             });
-            const updatePreferences = await updateByUserId(user!.id, {
-              location: {
-                type: "Point",
-                coordinates: [latitude, longitude],
+            const updatePreferences = await updateByUserId(
+              user!.id,
+              {
+                location: {
+                  type: "Point",
+                  coordinates: [latitude, longitude],
+                },
               },
-            });
+              pathname
+            );
             setSaved(true);
           } catch (error) {
             console.log(error);
@@ -52,7 +58,7 @@ const Dashboard = () => {
         }
         // fetch feed based on current preferences
         const dates = await fetchPossibleDates(user!.id);
-    
+
         setDat(dates);
       } catch (error) {
         console.log(error);
@@ -64,8 +70,8 @@ const Dashboard = () => {
   return (
     <>
       {loading ? (
-        <div className="md:h-full w-full items-center justify-center flex min-h-screen">
-          <Circles  />
+        <div className="flex items-center justify-center w-full h-screen">
+          <Circles color="#4f46e5" />
         </div>
       ) : (
         <>

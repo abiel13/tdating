@@ -1,17 +1,21 @@
 "use client";
 
-import { getUserMessageRequest, updateMessageReqStatus } from "@/lib/actions/message.actions";
+import {
+  getUserMessageRequest,
+  updateMessageReqStatus,
+} from "@/lib/actions/message.actions";
 import { useUserStore } from "@/providers/user.provider";
 import Link from "next/link";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { Loader, UserX, UserCheck } from "lucide-react"; // Example icons
+import { usePathname } from "next/navigation";
 
 const Messages = () => {
   const [messageReq, setMessageReq] = useState<any[]>([]);
   const { user } = useUserStore((state) => state);
   const [loading, setLoading] = useState(false);
-  const [ref, setref] = useState(false);
+  const pathname = usePathname();
 
   const handleclick = async (
     id: string,
@@ -24,12 +28,9 @@ const Messages = () => {
         id,
         status,
         fromUserId,
-        toUserId
+        toUserId,
+        pathname
       );
-      if (updateReq) {
-        console.log(updateReq)
-        setref((prev) => !prev);
-      }
     } catch (error) {
       console.log(error);
     }
@@ -42,13 +43,14 @@ const Messages = () => {
         setLoading(true);
         const response = await getUserMessageRequest(user!.id);
         setMessageReq(response);
+        console.log(response);
       } catch (error) {
         console.log(error);
       } finally {
         setLoading(false);
       }
     })();
-  }, [user, ref]);
+  }, [user]);
 
   if (loading)
     return (
@@ -66,7 +68,9 @@ const Messages = () => {
               key={i}
               className="w-full bg-gradient-to-r from-[#120f20] to-[#010929] bg-opacity-90 backdrop-blur-md p-5 rounded-3xl shadow-lg transform transition hover:scale-[1.02] hover:shadow-2xl"
             >
-              <h3 className="text-2xl font-semibold mb-1">{item.fromUserId.fullName}</h3>
+              <h3 className="text-2xl font-semibold mb-1">
+                {item.fromUserId.fullName}
+              </h3>
               <p className="text-gray-300 text-base mb-4">{item.message}</p>
               <div className="flex gap-4 flex-wrap items-center">
                 <Link
@@ -80,10 +84,11 @@ const Messages = () => {
                     handleclick(
                       item._id,
                       "Accepted",
-                      item.toUserId._id,
+                      item.toUserId,
                       item.fromUserId._id
                     )
                   }
+                  disabled={loading}
                   className="flex items-center justify-center bg-green-500 hover:bg-green-700 text-white font-medium px-6 py-2 rounded-full transition-all transform hover:scale-105"
                 >
                   <span className="mr-2">Accept</span> <UserCheck size={20} />
@@ -97,6 +102,7 @@ const Messages = () => {
                       item.fromUserId._id
                     )
                   }
+                  disabled={loading}
                   className="flex items-center justify-center bg-red-500 hover:bg-red-700 text-white font-medium px-6 py-2 rounded-full transition-all transform hover:scale-105"
                 >
                   <span className="mr-2">Decline</span> <UserX size={20} />

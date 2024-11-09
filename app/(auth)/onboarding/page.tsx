@@ -14,7 +14,7 @@ const OnboardingPage = async ({
   };
 
   return (
-    <section className="w-full h-screen overflow-y-hidden bg-[#011014] flex items-center justify-center flex-col gap-5">
+    <section className="w-full min-h-screen md:h-screen overflow-y-hidden bg-[#011014] flex items-center justify-center flex-col gap-5">
       <h1 className="text-white font-bold font-sans text-2xl">
         Welcome to{"  "}
         <Logo />{" "}
